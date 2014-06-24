@@ -58,9 +58,8 @@ pw useradd -n admin -u 1001 -s /bin/tcsh -m -d /home/admin -G wheel -c 'Admin Us
 #rm -rf /pkg
 
 # PKGng
-pkg bootstrap
+env ASSUME_ALWAYS_YES=YES pkg bootstrap
 pkg update
-pkg install puppet
 
 # Postinstall
 ##############
