@@ -1,0 +1,78 @@
+---
+- hosts: all
+  remote_user: root
+
+  tasks:
+  - name: install sudo 
+    pkgng: name=sudo state=present
+    when: ansible_os_family == "FreeBSD"
+
+  - name: ansible group
+    group: name=ansible state=present
+
+  - name: add ansible user
+    action: user name=ansible 
+      shell=/bin/sh 
+      group=ansible 
+      groups=wheel 
+      append=yes
+  
+  - name: matt group
+    group: name=matt state=present
+  
+  - name: add matt
+    action: user name=matt 
+      shell=/bin/tcsh 
+      group=matt 
+      groups=wheel 
+      append=yes
+
+  - name: OpenBSD easy-sudoers
+    template: src=/home/matt/dotfiles/OpenBSD/sudoers
+      dest=/etc/sudoers
+      validate='visudo -cf %s'
+    when: ansible_os_family == "OpenBSD"
+
+  - name: easy-sudoers
+    template: src=/home/matt/dotfiles/easy-sudoers
+      dest=/usr/local/etc/sudoers.conf
+      validate='visudo -cf %s'
+    when: ansible_os_family != "OpenBSD"
+
+  - name: create key directory
+    action: file path=/etc/ssh/authorized_keys state=directory
+      owner=0 group=0 mode=0755
+
+  - name: upload ansible key
+    authorized_key: user=ansible
+      key="{{ lookup('file', '/etc/ansible/authorized_keys/ansible') }}"
+      #"
+  
+  - name: upload my key
+    authorized_key: user=matt
+      key="{{ lookup('file', '/home/matt/.ssh/chiyochichi.home.pub') }}"
+      #"
+      #with_first_found:
+      # - files:
+      #   - "{{ ansible_hostname }}.pub"
+      #  paths:
+      #   - /home/matt/.ssh/
+
+#    action: copy src=/etc/ansible/authorized_keys/{{ ansible_hostname }}/{{ item }}
+#    action: copy src=/etc/ansible/authorized_keys/ansible
+#      dest=/etc/ssh/authorized_keys/
+#      owner=0 group=0 mode=644
+#    with_items: sshusers
+
+  - name: sshd configuration file update
+    template: src=templates/sshd_config.j2
+      dest=/etc/ssh/sshd_config
+      backup=yes
+      owner=0 group=0 mode=0644
+      validate='/usr/sbin/sshd -T -f %s'
+    notify:
+    - restart sshd
+
+  handlers:
+    - name: restart sshd
+      service: name=sshd state=restarted
