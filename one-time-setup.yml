@@ -1,7 +1,6 @@
 ---
-- remote_user: root
-  hosts: all
-
+- hosts: all
+  remote_user: root
   tasks:
   - name: install sudo 
     pkgng: name=sudo state=present
