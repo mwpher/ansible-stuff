@@ -1,0 +1,29 @@
+---
+- hosts: all
+  user: root
+
+  tasks:
+  - name: install FreeBSD stuff
+    pkgng: name={{ item }} state=present
+    with_items:
+      - git
+      - vim-lite
+      - zsh
+      - bash
+      - tmux
+    when: ansible_os_family == "FreeBSD"
+
+  - name: install & setup denyhosts
+    pkgng: name=denyhosts state=present
+    template: src=/home/matt/dotfiles/denyhosts/denyhosts.conf dest=/usr/local/etc/denyhosts.conf    
+    when: ansible_os_family == "FreeBSD"
+    tags: denyhosts
+
+  - name: OpenBSD easy-sudoers
+    template: src=/home/matt/dotfiles/OpenBSD/sudoers dest=/etc/sudoers validate='visudo -cf %s'
+    when: ansible_os_family == "OpenBSD"
+
+  - name: FreeBSD easy-sudoers
+    template: src=/home/matt/dotfiles/easy-sudoers dest=/usr/local/etc/sudoers.conf validate='visudo -cf %s'
+    when: ansible_os_family == "FreeBSD"
+

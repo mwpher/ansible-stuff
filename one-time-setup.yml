@@ -1,0 +1,28 @@
+---
+- remote_user: root
+  hosts: all
+
+  tasks:
+  - name: install sudo 
+    pkgng: name=sudo state=present
+    when: ansible_os_family == "FreeBSD"
+
+  - name: ansible group
+    group: name=ansible state=present
+
+  - name: add ansible user
+    action: user name=ansible 
+      shell=/bin/sh 
+      group=ansible 
+      groups=wheel 
+      append=yes
+  
+  - name: upload ansible key
+    authorized_key: user=ansible
+      key="{{ lookup('file', '/home/matt/.ssh/id_rsa.pub') }}"
+
+  - name: easy-sudoers
+    template: src=/home/matt/dotfiles/easy-sudoers
+      dest=/usr/local/etc/sudoers.conf
+      validate='visudo -cf %s'
+    when: ansible_os_family != "OpenBSD"

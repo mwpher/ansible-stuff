@@ -1,0 +1,15 @@
+#$Id$
+#{{ ansible_managed }}
+
+## Params
+# Interfaces
+local_if="lo0"
+ext_if="{{ ansible_default_ipv4.device }}"
+
+# Address list
+server_addr="{{ ansible_default_ipv4.address }}"
+
+# Scrub rules
+#
+scrub all reassemble tcp
+
