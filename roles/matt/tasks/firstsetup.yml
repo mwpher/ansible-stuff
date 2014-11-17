@@ -45,12 +45,12 @@
 
   - name: upload ansible key
     authorized_key: user=ansible
-      key="{{ lookup('file', '/etc/ansible/authorized_keys/ansible') }}"
+      key="{{ lookup('file', '/home/matt/.ssh/ansible.pub') }}"
       #"
   
   - name: upload my key
     authorized_key: user=matt
-      key="{{ lookup('file', '/home/matt/.ssh/chiyochichi.home.pub') }}"
+      key="{{ lookup('file', '/home/matt/.ssh/authorized_keys') }}"
       #"
       #with_first_found:
       # - files:

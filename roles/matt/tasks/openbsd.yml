@@ -1,17 +1,14 @@
 ---
-- hosts: openbsd
-  user: ansible
-  sudo: yes
+- name: install stuff
+  openbsd_pkg: name={{ item }} state=present
+  with_items:
+    - git
+    - vim
+    - zsh
+    - bash
+    - sshguard--
 
-  tasks:
-  - name: install stuff
-    openbsd_pkg: name={{ item }} state=present
-    with_items:
-      - git
-      - vim
-      - zsh
-      - bash
-      - sshguard--
-
-  - name: lol
-    command: echo 'ping!'
+- name: OpenBSD easy-sudoers
+  template: src=/home/matt/dotfiles/OpenBSD/sudoers
+    dest=/etc/sudoers
+    validate='visudo -cf %s'

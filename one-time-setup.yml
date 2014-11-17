@@ -1,6 +1,7 @@
 ---
 - hosts: all
   remote_user: root
+  connection: paramiko
   tasks:
   - name: install sudo 
     pkgng: name=sudo state=present

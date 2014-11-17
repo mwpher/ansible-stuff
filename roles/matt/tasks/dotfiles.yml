@@ -1,0 +1,20 @@
+---
+- name: dotfiles git
+  git: repo=https://github.com/mwpher/dotfiles
+    dest=/home/matt/dotfiles
+    recursive=yes
+    track_submodules=yes
+
+- name: set up git correctly
+  shell: "{{ item }}"
+  with_items:
+  - git config --global user.name "Matthew Pherigo"
+  - git config --global user.email hybrid120@gmail.com;
+  - git config --global push.default simple;
+
+- name: link dotvim
+  file: src=/home/matt/dotfiles/dotvim dest=/home/matt/.vim state=link
+- name: link zshrc
+  file: src=/home/matt/dotfiles/zshrc dest=/home/matt/.zshrc state=link
+- name: link tmux.conf
+  file: src=/home/matt/dotfiles/tmux.conf dest=/home/matt/.tmux.conf state=link

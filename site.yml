@@ -1,0 +1,14 @@
+---
+- hosts: all
+  remote_user: ansible
+  sudo: yes
+
+  pre_tasks:
+  - group_by: key={{ansible_distribution}}
+
+- hosts: workstation
+  remote_user: ansible
+  sudo: yes
+  roles:
+  - matt
+  - sshd

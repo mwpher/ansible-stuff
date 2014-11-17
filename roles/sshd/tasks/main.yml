@@ -1,13 +1,12 @@
 ---
-- tasks:
-  - name: sshd
-    service: name=sshd state=started enabled=yes
-    tags: sshd
+- name: sshd
+  service: name=sshd state=started enabled=yes
+  tags: sshd
 
-  - name: sshd config file
-    template: source=sshd_config.j2
+- name: sshd config file
+  template: src=sshd_config.j2
     dest=/etc/ssh/sshd_config
     owner=root group=wheel 
     mode=0644
-    tags: sshd
-    notify: restart sshd
+  tags: sshd
+  notify: restart sshd

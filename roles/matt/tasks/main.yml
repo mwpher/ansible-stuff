@@ -1,0 +1,39 @@
+---
+- name: ansible group
+  group: name=ansible state=present
+
+- name: add ansible user
+  action: user name=ansible 
+    shell=/bin/sh 
+    group=ansible 
+    groups=wheel 
+    append=yes
+
+- name: upload ansible key
+  authorized_key: user=ansible
+    key="{{ lookup('file', '/home/matt/.ssh/ansible_rsa.pub') }}"
+    #"
+
+- name: freebsd-specific stuff
+  include: freebsd.yml
+  when: ansible_os_family == "FreeBSD"
+
+- name: openbsd-specific stuff
+  include: openbsd.yml
+  when: ansible_os_family == "OpenBSD"
+
+- name: matt group
+  group: name=matt state=present
+
+- name: matt user
+  action: user name=matt 
+    shell=/usr/local/bin/zsh
+    group=matt 
+    groups=wheel 
+    append=yes
+
+- name: upload my key
+  authorized_key: user=matt
+    key="{{ lookup('file', '/home/matt/.ssh/authorized_keys') }}"
+
+- include: dotfiles.yml
