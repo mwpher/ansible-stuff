@@ -14,9 +14,9 @@
 # Note that some of FreeBSD's defaults differ from OpenBSD's, and
 # FreeBSD has a few additional options.
 
-Port 22
+#Port 22
 #AddressFamily any
-ListenAddress {{ ansible_default_ipv4 }}
+ListenAddress {{ ansible_default_ipv4.address }}
 #ListenAddress ::
 
 # The default requires explicit activation of protocol 1
