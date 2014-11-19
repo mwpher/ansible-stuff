@@ -2,6 +2,7 @@
 - hosts: all
   remote_user: ansible
   sudo: yes
+  accelerate: true
 
   pre_tasks:
   - group_by: key={{ansible_distribution}}

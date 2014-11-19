@@ -2,6 +2,7 @@
 - hosts: all
   remote_user: root
   connection: paramiko
+  accelerate: false
   tasks:
   - name: install sudo 
     pkgng: name=sudo state=present
@@ -19,10 +20,15 @@
   
   - name: upload ansible key
     authorized_key: user=ansible
-      key="{{ lookup('file', '/home/matt/.ssh/id_rsa.pub') }}"
+      key="{{ lookup('file', '/home/matt/.ssh/ansible_rsa.pub') }}"
 
   - name: easy-sudoers
     template: src=/home/matt/dotfiles/easy-sudoers
       dest=/usr/local/etc/sudoers.conf
       validate='visudo -cf %s'
     when: ansible_os_family != "OpenBSD"
+
+  - name: add dependencies for accelerated mode"
+    pkgng: name={{ item }} state=present
+    - py27-asn1
+    - py27-keyczar
