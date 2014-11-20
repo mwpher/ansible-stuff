@@ -28,7 +28,7 @@
       validate='visudo -cf %s'
     when: ansible_os_family != "OpenBSD"
 
-  - name: add dependencies for accelerated mode"
+  - name: add dependencies for accelerated mode
     pkgng: name={{ item }} state=present
     - py27-asn1
     - py27-keyczar
