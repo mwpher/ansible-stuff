@@ -1,15 +1,20 @@
 ---
 - hosts: all
-  remote_user: ansible
   sudo: yes
-  accelerate: true
+  accelerate: yes
 
   pre_tasks:
   - group_by: key={{ansible_distribution}}
 
 - hosts: workstation
-  remote_user: ansible
   sudo: yes
+  accelerate: yes
   roles:
   - matt
   - sshd
+
+- hosts: FreeBSD
+  sudo: yes
+  accelerate: yes
+  roles:
+  - zfs_auto_snapshot

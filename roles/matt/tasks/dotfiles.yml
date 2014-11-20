@@ -9,8 +9,9 @@
   shell: "{{ item }}"
   with_items:
   - git config --global user.name "Matthew Pherigo"
-  - git config --global user.email hybrid120@gmail.com;
-  - git config --global push.default simple;
+  - git config --global user.email hybrid120@gmail.com
+  - git config --global push.default simple
+  run_once: true
 
 - name: link dotvim
   file: src=/home/matt/dotfiles/dotvim dest=/home/matt/.vim state=link
