@@ -6,6 +6,7 @@
     recursive=yes
     track_submodules=yes
     force=no
+  ignore_errors: yes
 
 - name: set up git correctly
   sudo_user: matt

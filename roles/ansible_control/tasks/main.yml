@@ -5,7 +5,6 @@
     group=ansible
     mode=0770
     state=directory
-    recurse=yes
 
 - name: latest ansible source
   sudo_user: matt
@@ -13,6 +12,7 @@
     dest=/home/matt/source-ansible
     recursive=yes
     force=no
+  ignore_errors: yes
 
 - name: my ansible files
   sudo_user: matt
@@ -21,6 +21,7 @@
     recursive=yes
     track_submodules=yes
     force=no
+  ignore_errors: yes
 
 - name: install pip
   pkgng: name=py27-pip state=present
