@@ -5,23 +5,29 @@
 
   pre_tasks:
   - group_by: key={{ansible_distribution}}
+  roles:
+  - { role: sshd, tags: 'base' }
   tasks:
-  - include: roles/installme/tasks/rsync.yml
+  - include: roles/installme/tasks/rsync.yml tags=base
 
 - hosts: workstation
   sudo: yes
-  #  accelerate: yes
+  pre_tasks:
+  - group_by: key={{ansible_distribution}}
   roles:
-  - matt
-  - sshd
+  - { role: matt, tags: 'matt' }
+  - { role: sshd, tags: 'base' }
 
 - hosts: ansible_host
   sudo: yes
+  pre_tasks:
+  - group_by: key={{ansible_distribution}}
   roles:
-  - ansible_control
+  - { role: ansible_control, tags: 'base' }
 
 - hosts: ZFS
   sudo: yes
-  #  accelerate: yes
+  pre_tasks:
+  - group_by: key={{ansible_distribution}}
   roles:
-  - zfs_auto_snapshot
+  - { role: zfs_auto_snapshot, tags: 'base' }
