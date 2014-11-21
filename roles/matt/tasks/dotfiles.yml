@@ -1,5 +1,6 @@
 ---
 - name: dotfiles git
+  sudo_user: matt
   git: repo=https://github.com/mwpher/dotfiles
     dest=/home/matt/dotfiles
     recursive=yes
@@ -7,6 +8,7 @@
     force=no
 
 - name: set up git correctly
+  sudo_user: matt
   shell: "{{ item }}"
   with_items:
   - git config --global user.name "Matthew Pherigo"
@@ -15,8 +17,11 @@
   run_once: true
 
 - name: link dotvim
+  sudo_user: matt
   file: src=/home/matt/dotfiles/dotvim dest=/home/matt/.vim state=link
 - name: link zshrc
+  sudo_user: matt
   file: src=/home/matt/dotfiles/zshrc dest=/home/matt/.zshrc state=link
 - name: link tmux.conf
+  sudo_user: matt
   file: src=/home/matt/dotfiles/tmux.conf dest=/home/matt/.tmux.conf state=link
