@@ -1,20 +1,25 @@
 ---
 - hosts: all
   sudo: yes
-  accelerate: yes
+  #  accelerate: yes
 
   pre_tasks:
   - group_by: key={{ansible_distribution}}
 
 - hosts: workstation
   sudo: yes
-  accelerate: yes
+  #  accelerate: yes
   roles:
   - matt
   - sshd
 
-- hosts: FreeBSD
+- hosts: ansible_host
   sudo: yes
-  accelerate: yes
+  roles:
+  - ansible_control
+
+- hosts: ZFS
+  sudo: yes
+  #  accelerate: yes
   roles:
   - zfs_auto_snapshot
