@@ -1,6 +1,6 @@
 ---
 - name: ansible directory
-  file: path=/usr/local/etc/ansible
+  file: path=/etc/ansible
     owner=ansible
     group=ansible
     mode=0770
@@ -11,12 +11,14 @@
   git: dest=/home/matt/source-ansible
     repo=https://github.com/ansible/ansible
     recursive=yes
-  
+    force=no
+
 - name: my ansible files
   git: repo=https://github.com/mwpher/ansible-stuff
     dest=/home/matt/ansible-stuff
     recursive=yes
     track_submodules=yes
+    force=no
 
 - name: install pip
   pkgng: name=py27-pip state=present

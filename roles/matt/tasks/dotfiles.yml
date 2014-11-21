@@ -4,6 +4,7 @@
     dest=/home/matt/dotfiles
     recursive=yes
     track_submodules=yes
+    force=no
 
 - name: set up git correctly
   shell: "{{ item }}"

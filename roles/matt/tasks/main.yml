@@ -29,7 +29,7 @@
   action: user name=matt 
     shell=/usr/local/bin/zsh
     group=matt 
-    groups=wheel 
+    groups=wheel,ansible
     append=yes
 
 - name: upload my key
