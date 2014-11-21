@@ -30,5 +30,6 @@
 
   - name: add dependencies for accelerated mode
     pkgng: name={{ item }} state=present
+    with_items:
     - py27-asn1
     - py27-keyczar
