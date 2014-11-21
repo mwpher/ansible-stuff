@@ -1,4 +1,5 @@
 ---
 - name: install rsync [FreeBSD]
   pkgng: name=rsync state=present
-  when: ansible_os_family == 'FreeBSD'
+  when: ansible_distribution == 'FreeBSD'
+
