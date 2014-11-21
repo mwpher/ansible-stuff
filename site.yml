@@ -8,7 +8,7 @@
   roles:
   - { role: sshd, tags: 'base' }
   tasks:
-  - include: roles/installme/tasks/rsync.yml tags=base
+  - include: roles/installme/tasks/rsync.yml tags=base,packages
 
 - hosts: workstation
   sudo: yes

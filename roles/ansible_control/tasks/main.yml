@@ -13,6 +13,8 @@
     recursive=yes
     force=no
   ignore_errors: yes
+  tags:
+  - git
 
 - name: my ansible files
   sudo_user: matt
@@ -22,9 +24,13 @@
     track_submodules=yes
     force=no
   ignore_errors: yes
+  tags:
+  - git
 
 - name: install pip
   pkgng: name=py27-pip state=present
+  tags:
+  - packages
 
 - name: ansible dependencies
   pip: name={{ item }} state=present
@@ -33,3 +39,5 @@
   - PyYAML
   - Jinja2
   - httplib2
+  tags:
+  - packages

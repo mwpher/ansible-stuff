@@ -8,6 +8,8 @@
     - zsh
     - bash
     - tmux
+  tags:
+  - packages
 
 - name: FreeBSD easy-sudoers
   template: src=/home/matt/dotfiles/easy-sudoers
