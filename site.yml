@@ -5,6 +5,8 @@
 
   pre_tasks:
   - group_by: key={{ansible_distribution}}
+  tasks:
+  - include: roles/installme/tasks/rsync.yml
 
 - hosts: workstation
   sudo: yes
