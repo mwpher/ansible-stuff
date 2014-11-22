@@ -18,6 +18,13 @@
   - { role: matt, tags: 'matt' }
   - { role: sshd, tags: 'base' }
 
+- hosts: Chiyochan.home
+  sudo: yes
+  pre_tasks:
+  - group_by: key={{ansible_distribution}}
+  roles:
+  - { role: matt_programming, tags: 'matt' }
+
 - hosts: ansible_host
   sudo: yes
   pre_tasks:

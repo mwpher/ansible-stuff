@@ -1,0 +1,17 @@
+---
+- name: programming git
+  sudo_user: matt
+  git: repo=https://github.com/mwpher/MyProjects
+    dest=/home/matt/MyProjects
+    recursive=yes
+    track_submodules=yes
+    force=no
+  ignore_errors: yes
+  tags:
+  - git
+
+- name: install clang on OpenBSD
+  openbsd_pkg: name=clang state=present
+  when: ansible_os_family == "OpenBSD"
+  tags:
+  - packages
