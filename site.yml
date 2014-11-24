@@ -7,8 +7,7 @@
   - group_by: key={{ansible_distribution}}
   roles:
   - { role: sshd, tags: 'base' }
-  tasks:
-  - include: roles/installme/tasks/rsync.yml tags=base,packages
+  - { role: common, tags: 'base' }
 
 - hosts: workstation
   sudo: yes

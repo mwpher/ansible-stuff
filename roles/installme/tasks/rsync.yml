@@ -1,7 +1,0 @@
----
-- name: install rsync [FreeBSD]
-  pkgng: name=rsync state=present
-  when: ansible_distribution == 'FreeBSD'
-  tags:
-  - packages
-

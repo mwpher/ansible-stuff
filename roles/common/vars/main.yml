@@ -1,0 +1,8 @@
+---
+# common/vars/main.yml
+logwatch: True
+logwatch_hour: 8
+
+periodic_user: matt
+daily_clean_tmps_enable: True
+

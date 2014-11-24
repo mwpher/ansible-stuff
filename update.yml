@@ -1,0 +1,12 @@
+---
+- hosts: all
+  sudo: yes
+
+  tasks: 
+  - name: update freebsd
+    command: env ASSUME_ALWAYS_YES=YES freebsd-update fetch install
+    when: ansible_os_family == "FreeBSD"
+
+  - name: update freebsd packages
+    command: env ASSUME_ALWAYS_YES=YES pkg upgrade
+    when: ansible_os_family == "FreeBSD"

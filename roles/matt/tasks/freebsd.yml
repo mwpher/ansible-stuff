@@ -12,7 +12,7 @@
   - packages
 
 - name: FreeBSD easy-sudoers
-  template: src=/home/matt/dotfiles/easy-sudoers
+  template: src=/home/matt/dotfiles/easy-sudoers.j2
     dest=/usr/local/etc/sudoers.conf
     validate='visudo -cf %s'
 

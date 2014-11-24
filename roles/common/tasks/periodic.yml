@@ -1,0 +1,25 @@
+---
+- name: periodic.conf
+  file: path=/etc/periodic.conf
+    owner=root
+    group=wheel
+    mode=0644
+    state=touch
+
+- name: set periodic mail recipient
+  lineinfile: dest=/etc/periodic.conf
+    regexp="^{{ item }}="
+    line="{{ item }}={{ periodic_user }}"
+  with_items:
+  - daily_output
+  - daily_status_security_output
+  - weekly_output
+  - weekly_status_security_output
+  - monthly_output
+  - monthly_status_security_output
+
+- name: daily clean /tmp
+  lineinfile: dest=/etc/periodic.conf
+    regexp="^daily_clean_tmps_enable="
+    line="daily_clean_tmps_enable=YES"
+  when: daily_clean_tmps_enable == True

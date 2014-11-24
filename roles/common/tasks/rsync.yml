@@ -1,0 +1,8 @@
+---
+- name: install rsync [FreeBSD]
+  pkgng: name=rsync state=present
+  when: ansible_distribution == 'FreeBSD'
+
+- name: install rsync [OpenBSD]
+  openbsd_pkg: name=rsync-- state=present
+  when: ansible_distribution == 'OpenBSD'

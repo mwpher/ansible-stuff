@@ -1,0 +1,6 @@
+---
+# Common settings
+- include: freebsd.yml
+  when: ansible_distribution == 'FreeBSD'
+
+- include: rsync.yml tags="packages"

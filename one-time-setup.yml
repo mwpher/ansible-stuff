@@ -23,10 +23,16 @@
       key="{{ lookup('file', '/home/matt/.ssh/ansible_rsa.pub') }}"
 
   - name: easy-sudoers
-    template: src=/home/matt/dotfiles/easy-sudoers
+    template: src=/home/matt/dotfiles/easy-sudoers.j2
       dest=/usr/local/etc/sudoers.conf
       validate='visudo -cf %s'
     when: ansible_os_family != "OpenBSD"
+
+  - name: OpenBSD easy-sudoers
+    template: src=/home/matt/dotfiles/OpenBSD/sudoers.j2
+      dest=/etc/sudoers
+      validate='visudo -cf %s'
+    when: ansible_os_family == "OpenBSD"
 
   - name: add dependencies for accelerated mode
     pkgng: name={{ item }} state=present
