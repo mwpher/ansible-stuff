@@ -1,6 +1,6 @@
 ---
 - name: sshd
-  service: name=sshd state=started enabled=yes
+  service: name=sshd state=started
   tags: sshd
 
 - name: sshd config file

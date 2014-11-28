@@ -1,5 +1,16 @@
 ---
 - include: logwatch.yml
-  when: logwatch == True
+  when: logwatch == "YES"
+
+- include: sshguard.yml
+  when: sshguard == "YES"
 
 - include: periodic.yml 
+
+- template: src=rc.conf.local.j2
+    dest=/etc/rc.conf.local
+    owner=root
+    group=wheel
+    mode=0644
+
+

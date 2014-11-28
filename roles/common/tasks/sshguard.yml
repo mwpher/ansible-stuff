@@ -1,0 +1,15 @@
+---
+- name: install sshguard
+  pkgng: name=sshguard state=present
+  tags:
+  - packages
+
+- name: hosts.allow
+  file: path=/etc/hosts.allow
+    owner=root
+    group=wheel
+    mode=0644
+    state=file
+
+- name: start sshguard
+  service: name=sshguard state=started enabled=yes

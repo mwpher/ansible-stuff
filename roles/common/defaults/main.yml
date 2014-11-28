@@ -1,0 +1,14 @@
+---
+# common/defaults/main.yml
+sshd: "NO"
+
+logwatch: False
+logwatch_hour: 8
+
+periodic_user: matt
+daily_clean_tmps_enable: True
+
+sshguard: "NO"
+sshguard_watch_logs: "/var/log/auth.log" # colon-seperated
+
+syslogd_flags: "-ss -c"
