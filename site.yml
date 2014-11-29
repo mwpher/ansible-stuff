@@ -6,8 +6,8 @@
   pre_tasks:
   - group_by: key={{ansible_distribution}}
   roles:
-  - { role: sshd, tags: 'base' }
-  - { role: common, tags: 'base' }
+  - { role: sshd, tags: 'sshd,base' }
+  - { role: common, tags: 'common,base' }
 
 - hosts: workstation
   sudo: yes

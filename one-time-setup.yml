@@ -3,11 +3,8 @@
   remote_user: root
   connection: paramiko
   accelerate: false
-  tasks:
-  - name: install sudo 
-    pkgng: name=sudo state=present
-    when: ansible_os_family == "FreeBSD"
 
+  pre_tasks:
   - name: ansible group
     group: name=ansible state=present
 
@@ -22,20 +19,12 @@
     authorized_key: user=ansible
       key="{{ lookup('file', '/home/matt/.ssh/ansible_rsa.pub') }}"
 
-  - name: easy-sudoers
-    template: src=/home/matt/dotfiles/easy-sudoers.j2
-      dest=/usr/local/etc/sudoers.conf
-      validate='visudo -cf %s'
-    when: ansible_os_family != "OpenBSD"
-
-  - name: OpenBSD easy-sudoers
-    template: src=/home/matt/dotfiles/OpenBSD/sudoers.j2
-      dest=/etc/sudoers
-      validate='visudo -cf %s'
-    when: ansible_os_family == "OpenBSD"
-
   - name: add dependencies for accelerated mode
     pkgng: name={{ item }} state=present
     with_items:
     - py27-asn1
     - py27-keyczar
+
+  roles:
+  - { role: common, tags: sudo }
+  - { role: sshd }
