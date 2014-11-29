@@ -1,9 +1,13 @@
 # {{ ansible_managed }}
 Port {{ sshd_port }}
-ListenAddress {{ ansible_default_ipv4.address }}
+{% if sshd_listen_addresses is defined %}
+# sshd_listen_addresses
 {% for sshd_listen_address in sshd_listen_addresses %}
 ListenAddress {{ sshd_listen_address }}
 {% endfor %}
+{% else %}
+ListenAddress {{ ansible_default_ipv4.address }}
+{% endif %}
 
 # The default requires explicit activation of protocol 1
 Protocol 2

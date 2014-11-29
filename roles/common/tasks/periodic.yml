@@ -7,16 +7,21 @@
     state=touch
 
 - name: set periodic mail recipient
-  lineinfile: dest=/etc/periodic.conf
-    regexp="^{{ item }}="
-    line="{{ item }}={{ periodic_user }}"
-  with_items:
-  - daily_output
-  - daily_status_security_output
-  - weekly_output
-  - weekly_status_security_output
-  - monthly_output
-  - monthly_status_security_output
+  lineinfile: "dest=/etc/aliases
+    line='root: {{ periodic_user }}'"
+  notify: update aliases
+
+    #- name: set periodic mail recipient
+    #  lineinfile: dest=/etc/periodic.conf
+    #    regexp="^{{ item }}="
+    #    line="{{ item }}={{ periodic_user }}"
+    #  with_items:
+    #  - daily_output
+    #  - daily_status_security_output
+    #  - weekly_output
+    #  - weekly_status_security_output
+    #  - monthly_output
+    #  - monthly_status_security_output
 
 - name: daily clean /tmp
   lineinfile: dest=/etc/periodic.conf

@@ -3,4 +3,6 @@
 - include: freebsd.yml
   when: ansible_distribution == 'FreeBSD'
 
+- include: sudoers.yml tags="sudo"
+
 - include: rsync.yml tags="packages"

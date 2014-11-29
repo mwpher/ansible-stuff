@@ -9,8 +9,3 @@
     - sshguard--
   tags:
   - packages
-
-- name: OpenBSD easy-sudoers
-  template: src=/home/matt/dotfiles/OpenBSD/sudoers.j2
-    dest=/etc/sudoers
-    validate='visudo -cf %s'

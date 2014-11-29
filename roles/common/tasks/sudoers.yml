@@ -1,0 +1,16 @@
+---
+- name: install sudo
+  pkgng: name=sudo state=present
+  when: ansible_os_family == "FreeBSD"
+
+- name: easy-sudoers
+  template: src=/home/matt/dotfiles/easy-sudoers.j2
+    dest=/usr/local/etc/sudoers
+    validate='visudo -cf %s'
+  when: ansible_os_family == "FreeBSD"
+
+- name: OpenBSD easy-sudoers
+  template: src=/home/matt/dotfiles/OpenBSD/sudoers.j2
+    dest=/etc/sudoers
+    validate='visudo -cf %s'
+  when: ansible_os_family == "OpenBSD"

@@ -2,7 +2,7 @@
 # common/defaults/main.yml
 sshd: "NO"
 
-logwatch: False
+logwatch: "NO"
 logwatch_hour: 8
 
 periodic_user: matt
