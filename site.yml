@@ -9,7 +9,7 @@
   - { role: sshd, tags: 'sshd,base' }
   - { role: common, tags: 'common,base' }
 
-- hosts: workstation
+- hosts: my_profile
   sudo: yes
   pre_tasks:
   - group_by: key={{ansible_distribution}}
