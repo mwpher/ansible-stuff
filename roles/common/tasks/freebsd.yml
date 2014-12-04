@@ -12,5 +12,6 @@
     owner=root
     group=wheel
     mode=0644
+  notify: restart sshguard
 
 
