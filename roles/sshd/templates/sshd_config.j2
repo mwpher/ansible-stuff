@@ -7,7 +7,6 @@ ListenAddress {{ sshd_listen_address }}
 {% endfor %}
 {% elif ansible_default_ipv4.address is defined %}
 ListenAddress {{ ansible_default_ipv4.address }}
-{% else %}
 {% endif %}
 
 # The default requires explicit activation of protocol 1
