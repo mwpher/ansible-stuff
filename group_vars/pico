@@ -1,0 +1,4 @@
+---
+pico: True
+nginx: True
+phpfpm: True

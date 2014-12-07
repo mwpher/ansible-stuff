@@ -4,16 +4,17 @@ sshd: "NO"
 
 git: True
 
-logwatch: "NO"
+logwatch: "YES"
 logwatch_hour: 8
 
 periodic_user: matt
 daily_clean_tmps_enable: True
 
-sshguard: "NO"
+sshguard: "YES"
 sshguard_watch_logs: "/var/log/auth.log" # colon-seperated
 
 nginx: False
 phpfpm: False
 
 syslogd_flags: "-ss -c"
+
