@@ -4,7 +4,15 @@
   connection: paramiko
   accelerate: false
 
+  vars_prompt:
+  - name: config_ssh
+    prompt: "Configure SSH? ['YES'/'NO']"
+    default: 'YES'
+
   pre_tasks:
+  - name: SSL cert package
+    pkgng: name=ca_root_nss state=present
+    when: ansible_distribution == 'FreeBSD'
   - name: ansible group
     group: name=ansible state=present
 
@@ -27,4 +35,4 @@
 
   roles:
   - { role: common, tags: sudo }
-  - { role: sshd }
+  - { role: sshd, when: config_ssh == "YES" }
