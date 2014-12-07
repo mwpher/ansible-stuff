@@ -1,0 +1,3 @@
+---
+dependencies:
+- { role: www, nginx: True, php: True, php-fpm: True, php-extensions: True }

@@ -1,0 +1,21 @@
+---
+- name: install php5
+  pkgng: name=php5 state=present
+  tags:
+  - packages
+
+- name: install php5-extensions
+  pkgng: name=php5-extensions state=present
+  when: php-extensions
+  tags:
+  - packages
+
+- name: configure php.ini
+  template: src=php.ini
+    dest=/usr/local/etc/php.ini
+    owner=root
+    group=wheel
+    mode=0644
+
+- include: php-fpm.yml
+  when: php-fpm

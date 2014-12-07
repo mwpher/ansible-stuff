@@ -1,0 +1,25 @@
+---
+- name: ensure php-fpm.d
+  file: path=/usr/local/etc/php-fpm.d
+    owner=root
+    group=wheel
+    mode=644
+    state=directory
+
+- name: ensure php-fpm socket dir
+  file: path=/var/run/php-fpm/
+    owner=root
+    group=wheel
+    mode=755
+    state=directory
+
+- name: configure php-fpm
+  template: src=php-fpm.conf
+    dest=/usr/local/etc/php-fpm.conf
+    owner=root
+    group=wheel
+    mode=0644
+  notify: restart php-fpm
+
+- name: start php-fpm
+  service: name=php-fpm state=started

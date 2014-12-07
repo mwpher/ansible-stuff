@@ -1,0 +1,7 @@
+---
+- include: nginx.yml tags='nginx'
+  when: nginx
+
+- include: php.yml tags='php,php-fpm'
+  when: php
+

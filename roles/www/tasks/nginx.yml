@@ -1,0 +1,26 @@
+---
+- name: install nginx
+  pkgng: name=nginx state=present
+  tags:
+  - packages
+
+- name: add nginx vhost directories
+  file: path=/usr/local/etc/nginx/sites-{{ item }}
+    owner=root
+    group=wheel
+    mode=0644
+    state=directory
+  with_items:
+  - available
+  - enabled
+
+- name: configure nginx
+  template: src=nginx.conf
+    dest=/usr/local/etc/nginx/nginx.conf
+    owner=root
+    group=wheel
+    mode=0644
+  notify: restart nginx
+
+- name: start nginx
+  service: name=nginx state=started
