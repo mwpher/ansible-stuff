@@ -15,9 +15,3 @@
     - { name: weekly, num_keep: 4 }
     - { name: monthly, num_keep: 12 }
 
-- name: Cleanup old daily cron zfs snapshot
-  cron: name="daily zfs-auto-snapshot" state=absent
-- name: Cleanup old weekly cron zfs snapshot
-  cron: name="weekly zfs-auto-snapshot" state=absent
-- name: Cleanup old monthly cron zfs snapshot
-  cron: name="monthly zfs-auto-snapshot" state=absent
