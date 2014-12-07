@@ -1,13 +1,22 @@
-# {{ ansible_managed }}
+# ansible managed
 
 sshd_enable="{{ sshd }}"
 syslogd_flags="{{ syslogd_flags }}"
 
-sshguard_enable="{{ sshguard }}"
+{% if nginx == True %}
+nginx_enable="YES"
+{% endif %}
+{% if phpfpm == True %}
+php_fpm_enable="YES"
+{% endif %}
+
+{% if sshguard == "YES" %}
+sshguard_enable="YES"
 sshguard_watch_logs="{{ sshguard_watch_logs }}"
 sshguard_safety_thresh="30"
 sshguard_pardon_min_interval="21600" 
 sshguard_prescribe_interval="86400"
+{% endif %}
 {% if ansible_default_ipv4.network is defined %}
 sshguard_whitelist="{{ ansible_default_ipv4.network }}/24" 
 {% endif %}

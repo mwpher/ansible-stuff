@@ -2,6 +2,8 @@
 # common/defaults/main.yml
 sshd: "NO"
 
+git: True
+
 logwatch: "NO"
 logwatch_hour: 8
 
@@ -10,5 +12,8 @@ daily_clean_tmps_enable: True
 
 sshguard: "NO"
 sshguard_watch_logs: "/var/log/auth.log" # colon-seperated
+
+nginx: False
+phpfpm: False
 
 syslogd_flags: "-ss -c"

@@ -5,13 +5,10 @@
 - include: sshguard.yml
   when: sshguard == "YES"
 
+- name: git package
+  pkgng: name=git state=present
+  when: git == True
+
 - include: periodic.yml 
 
-- template: src=rc.conf.local.j2
-    dest=/etc/rc.conf.local
-    owner=root
-    group=wheel
-    mode=0644
-  notify: restart sshguard
-
-
+- include: rcconf.yml
