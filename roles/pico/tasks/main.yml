@@ -1,0 +1,74 @@
+---
+- name: install pico dependencies
+  pkgng: name={{ item }} state=present
+  with_items:
+  - nginx
+  - php5
+  - php5-extensions
+  tags:
+  - packages
+
+- name: configure php-fpm
+  template: src=php-fpm.conf
+    dest=/usr/local/etc/php-fpm.conf
+    owner=root
+    group=wheel
+    mode=0644
+  notify: restart php-fpm
+
+- name: configure php
+  template: src=php.ini
+    dest=/usr/local/etc/php.ini
+    owner=root
+    group=wheel
+    mode=0644
+  notify: restart php-fpm
+
+- name: add nginx vhost directories
+  file: path=/usr/local/etc/nginx/sites-{{ item }}
+    owner=root
+    group=wheel
+    mode=0644
+    state=directory
+  with_items:
+  - available
+  - enabled
+
+- name: add my site git
+  git: repo=https://github.com/mwpher/Pico
+    dest=/usr/local/www/pico
+
+- name: set permissions
+  file: path=/usr/local/www/pico/
+    owner=www
+    group=www
+    mode=0755
+    state=directory
+
+- name: configure nginx
+  template: src=nginx.conf
+    dest=/usr/local/etc/nginx/nginx.conf
+    owner=root
+    group=wheel
+    mode=0644
+  notify: restart nginx
+
+- name: add pico vhost
+  template: src=pico
+    dest=/usr/local/etc/nginx/sites-available/pico
+    owner=root
+    group=wheel
+    mode=0644
+  notify: restart nginx
+
+- name: enable pico vhost
+  file: src=/usr/local/etc/nginx/sites-available/pico
+    dest=/usr/local/etc/nginx/sites-enabled/pico
+    state=link
+  notify: restart nginx
+
+- name: enable nginx & php-fpm
+  service: name={{ item }} state=started
+  with_items:
+  - nginx
+  - php-fpm

@@ -11,28 +11,35 @@
 
 - hosts: my_profile
   sudo: yes
+
   pre_tasks:
   - group_by: key={{ansible_distribution}}
   roles:
   - { role: matt, tags: 'matt' }
 
-- hosts: Chiyochan.home
-  sudo: yes
-  pre_tasks:
-  - group_by: key={{ansible_distribution}}
-  roles:
-  - { role: matt_programming, tags: 'matt' }
-
-- hosts: ansible_host
-  sudo: yes
-  pre_tasks:
-  - group_by: key={{ansible_distribution}}
-  roles:
-  - { role: ansible_control, tags: 'base' }
-
 - hosts: ZFS
   sudo: yes
+
   pre_tasks:
   - group_by: key={{ansible_distribution}}
   roles:
   - { role: zfs_auto_snapshot, tags: 'base' }
+
+- hosts: Chiyochan.home
+  sudo: yes
+
+  pre_tasks:
+  - group_by: key={{ansible_distribution}}
+  roles:
+  - { role: ansible_control, tags: 'base' }
+  - { role: matt_programming, tags: 'matt' }
+
+- hosts: pico
+  sudo: yes
+  vars:
+    nginx: True
+    phpfpm: True
+  pre_tasks:
+  - group_by: key={{ansible_distribution}}
+  roles:
+  - { role: pico, tags: 'www,pico' }

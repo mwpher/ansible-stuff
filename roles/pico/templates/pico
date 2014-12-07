@@ -1,0 +1,24 @@
+# nginx/php5-fpm/pico
+server
+{
+    listen 80;
+    #server_name yourdomain.com www.yourdomain.com; # Domain name pointed to server
+
+    root /usr/local/www/pico/; # Location of gpeasy installation root
+    index index.php index.html index.htm; # Default index files to try
+    try_files $uri $uri/ /index.php?$args; # Rewrite rules for gpeasy (pass /request as argument to cms)
+
+    #php5-fpm
+    location ~ \.php$
+    {
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+	fastcgi_param PATH_TRANSLATED $document_root$fastcgi_script_name;
+    }
+
+    location ~ /\.ht
+    {
+            deny all;
+    }
+}
