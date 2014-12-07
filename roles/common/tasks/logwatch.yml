@@ -13,13 +13,13 @@
     state=present
 
 - name: logwatch conf file
-  file: path=/usr/local/etc/logwatch.conf
+  template: src=logwatch.conf
+    dest=/usr/local/etc/logwatch.conf
     owner=root
     group=wheel
     mode=0644
-    state=touch
 
-- name: set periodic mail recipient
+- name: set logwatch mail recipient
   lineinfile: dest=/usr/local/etc/logwatch.conf
     regexp="^MailTo ="
     line="MailTo = {{ periodic_user }}"

@@ -1,5 +1,6 @@
 ---
-- template: src=rc.conf.local.j2
+- name: rc.conf.local
+  template: src=rc.conf.local.j2
     dest=/etc/rc.conf.local
     owner=root
     group=wheel
