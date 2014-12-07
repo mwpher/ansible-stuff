@@ -6,39 +6,20 @@
     mode=0770
     state=directory
 
-- name: ansible dependencies
-  pkgng: name={{ item }} state=present
-  with_items:
-  - gmake
-  - py27-pip
+- name: install pip
+  pkgng: name=py27-pip state=present
   tags:
   - packages
-- name: ansible pip dependencies
-  pip: name={{ item }} state=present
-  with_items:
-  - paramiko
-  - PyYAML
-  - Jinja2
-  - httplib2
+- name: install ansible
+  pip: name=ansible state=latest
   tags:
   - packages
-
-- name: latest ansible source
-  sudo_user: matt
-  git: repo=https://github.com/ansible/ansible
-    dest=/home/matt/source-ansible
-    recursive=yes
-    force=no
-  ignore_errors: yes
-  tags:
-  - git
 
 - name: my ansible files
   sudo_user: matt
   git: repo=https://github.com/mwpher/ansible-stuff
     dest=/home/matt/ansible-stuff
     recursive=yes
-    track_submodules=yes
     force=no
   ignore_errors: yes
   tags:
