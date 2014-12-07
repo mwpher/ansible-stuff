@@ -37,3 +37,6 @@
     key="{{ lookup('file', '/home/matt/.ssh/authorized_keys') }}"
 
 - include: dotfiles.yml
+
+- include: programming.yml
+  when: matt_programming

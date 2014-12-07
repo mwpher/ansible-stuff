@@ -11,5 +11,4 @@
   - { role: matt, tags: 'matt', when: my_profile }
   - { role: zfs_auto_snapshot, tags: 'base', when: ZFS }
   - { role: ansible_control, tags: 'base', when: ansible_control }
-  - { role: matt_programming, tags: 'matt', when: matt_programming }
   - { role: pico, tags: 'www,pico', when: pico }
