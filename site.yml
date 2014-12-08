@@ -7,7 +7,6 @@
   - group_by: key={{ansible_distribution}}
   roles:
   - { role: common, tags: 'common,base' }
-  - { role: sshd, tags: 'sshd,base', when: sshd == 'YES' }
   - { role: matt, tags: 'matt', when: my_profile }
   - { role: zfs_auto_snapshot, tags: 'base', when: ZFS }
   - { role: ansible_control, tags: 'base', when: ansible_control }
