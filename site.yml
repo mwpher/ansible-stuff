@@ -10,4 +10,12 @@
   - { role: matt, tags: 'matt', when: my_profile }
   - { role: zfs_auto_snapshot, tags: 'base', when: ZFS }
   - { role: ansible_control, tags: 'base', when: ansible_control }
+
+- hosts: www
+  sudo: yes
+  #accelerate: yes
+
+  pre_tasks:
+  - group_by: key={{ansible_distribution}}
+  roles:
   - { role: pico, tags: 'www,pico', when: pico }
