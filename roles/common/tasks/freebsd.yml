@@ -9,6 +9,9 @@
   pkgng: name=git state=present
   when: git == True
 
+- name: bsdstats
+  pkgng: name=bsdstats state=present
+
 - include: periodic.yml 
 
 - include: rcconf.yml
