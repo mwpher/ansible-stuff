@@ -1,18 +1,18 @@
 ---
 - hosts: all
   remote_user: root
-  connection: paramiko
   accelerate: false
 
   vars_prompt:
-  - name: config_ssh
+  - name: sshd
     prompt: "Configure SSH? ['YES'/'NO']"
-    default: 'YES'
+    default: "YES"
 
   pre_tasks:
   - name: SSL cert package
     pkgng: name=ca_root_nss state=present
     when: ansible_distribution == 'FreeBSD'
+
   - name: ansible group
     group: name=ansible state=present
 
@@ -34,5 +34,4 @@
     - py27-keyczar
 
   roles:
-  - { role: common, tags: sudo }
-  - { role: sshd, when: config_ssh == "YES" }
+  - { role: common }
