@@ -6,7 +6,6 @@ echo $@ $#
 ([ $# == '2' ] || exit)
 
 if [ $1 == '-j' ]; then
-	sudo ezjail-admin start $2
 	export ASSUME_ALWAYS_YES=YES
 	sudo pkg -j $2 update;
 	sudo pkg -j $2 install python;
