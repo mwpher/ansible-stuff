@@ -1,3 +1,4 @@
-[submodule "roles/pico/files/pico-master"]
-	path = roles/pico/files/pico-master
-	url = https://github.com/picocms/Pico
+[submodule "roles/ANXS-postgresql"]
+	path = roles/ANXS-postgresql
+	url = https://github.com/mwpher/postgresql
+	branch = freebsd
