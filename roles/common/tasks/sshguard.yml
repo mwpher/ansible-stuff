@@ -1,6 +1,6 @@
 ---
 - name: install sshguard
-  pkgng: name=sshguard state=present
+  pkgng: name=sshguard state=present cached=yes
   tags:
   - packages
 

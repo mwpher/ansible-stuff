@@ -3,9 +3,9 @@
 - include: freebsd.yml
   when: ansible_distribution == 'FreeBSD'
 
-- include: sudoers.yml tags="common,sudo"
+- include: sudoers.yml tags="common,base,sudo"
 
-- include: rsync.yml tags="common,packages"
+- include: rsync.yml tags="common,base,packages"
 
-- include: sshd.yml tags='common,sshd'
+- include: sshd.yml tags='common,base,sshd'
   when: sshd == "YES"

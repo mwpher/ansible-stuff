@@ -3,6 +3,8 @@
 sshd_enable="{{ sshd }}"
 syslogd_flags="{{ syslogd_flags }}"
 
+jail_sysvipc_allow="YES" # For jailhosts with PostgreSQL
+
 {% if nginx == True %}
 nginx_enable="YES"
 {% endif %}

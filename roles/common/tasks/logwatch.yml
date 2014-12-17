@@ -1,6 +1,6 @@
 ---
 - name: logwatch package
-  pkgng: name=logwatch state=present
+  pkgng: name=logwatch state=present cached=yes
   tags:
   - packages
 

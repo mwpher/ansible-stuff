@@ -1,6 +1,6 @@
 ---
 - name: install sudo
-  pkgng: name=sudo state=present
+  pkgng: name=sudo state=present cached=yes
   when: ansible_os_family == "FreeBSD"
 
 - name: easy-sudoers

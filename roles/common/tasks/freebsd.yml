@@ -6,11 +6,11 @@
   when: sshguard == "YES"
 
 - name: git package
-  pkgng: name=git state=present
+  pkgng: name=git state=present cached=yes
   when: git == True
 
 - name: bsdstats
-  pkgng: name=bsdstats state=present
+  pkgng: name=bsdstats state=present cached=yes
 
 - include: periodic.yml 
 
