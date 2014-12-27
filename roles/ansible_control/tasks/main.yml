@@ -7,7 +7,7 @@
     state=directory
 
 - name: install pip
-  pkgng: name=py27-pip state=present
+  pkgng: name=py27-pip state=present cached=yes
   tags:
   - packages
 - name: install ansible
