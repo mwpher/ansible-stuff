@@ -8,10 +8,17 @@
 - name: git package
   pkgng: name=git state=present cached=yes
   when: git == True
+  tags:
+  - packages
 
 - name: bsdstats
   pkgng: name=bsdstats state=present cached=yes
+  tags:
+  - packages
 
 - include: periodic.yml 
 
 - include: rcconf.yml
+
+- include: postfix.yml
+  when: postfix == True

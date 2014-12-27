@@ -34,4 +34,4 @@
     - py27-keyczar
 
   roles:
-  - { role: common }
+  - { role: common, tags='sshd' }

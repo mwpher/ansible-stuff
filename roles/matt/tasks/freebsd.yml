@@ -1,6 +1,6 @@
 ---
 - name: install FreeBSD stuff
-  pkgng: name={{ item }} state=present
+  pkgng: name={{ item }} state=present cached=yes
   with_items:
     - git
     - vim-lite

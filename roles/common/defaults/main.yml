@@ -9,6 +9,7 @@ sshd_tcp_forwarding: 'yes'
 sshd_x11_forwarding: 'yes'
 
 git: True
+postfix: False
 
 logwatch: "YES"
 logwatch_hour: 8
@@ -18,9 +19,6 @@ daily_clean_tmps_enable: True
 
 sshguard: "YES"
 sshguard_watch_logs: "/var/log/auth.log" # colon-seperated
-
-nginx: False
-phpfpm: False
 
 syslogd_flags: "-ss -c"
 

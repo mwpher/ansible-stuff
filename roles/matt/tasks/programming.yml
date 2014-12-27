@@ -4,11 +4,23 @@
   git: repo=https://github.com/mwpher/MyProjects
     dest=/home/matt/MyProjects
     recursive=yes
-    track_submodules=yes
+    track_submodules=no
     force=no
   ignore_errors: yes
   tags:
   - git
+
+- name: install programming tools for FreeBSD
+  pkgng: name={{ item }} state=present
+  with_items:
+  - python
+  - py27-pip
+
+- name: install python tools for FreeBSD
+  pip: name={{ item }} state=latest
+  with_items:
+  - ipython
+  - pycco
 
 - name: install clang on OpenBSD
   openbsd_pkg: name=clang state=present

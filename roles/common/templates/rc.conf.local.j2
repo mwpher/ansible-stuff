@@ -3,6 +3,15 @@
 sshd_enable="{{ sshd }}"
 syslogd_flags="{{ syslogd_flags }}"
 
+{% if postfix == True %}
+sendmail_enable="NO"
+sendmail_submit_enable="NO"
+sendmail_outbound_enable="NO"
+sendmail_msp_queue_enable="NO"
+
+postfix_enable="YES"
+
+{% endif %}
 jail_sysvipc_allow="YES" # For jailhosts with PostgreSQL
 
 {% if nginx == True %}

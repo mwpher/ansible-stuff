@@ -1,0 +1,27 @@
+# nginx/homedir
+# {{ ansible_managed }}
+server
+{
+    listen 8080;
+    #server_name {{ ansible_hostname }} www.{{ ansible_hostname }}; # Domain name pointed to server
+
+    root /usr/local/www/nginx/; # Location of gpeasy installation root
+    index index.php index.html index.htm; # Default index files to try
+    
+    location /
+    {
+        deny all;
+    }
+
+
+    location ~ ^/~(.+?)(/.*)?$ {
+        alias /home/$1/www$2;
+        autoindex on;
+	allow all;
+    }
+
+    location ~ /\.ht
+    {
+        deny all;
+    }
+}

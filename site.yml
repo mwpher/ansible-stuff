@@ -6,10 +6,11 @@
   pre_tasks:
   - group_by: key={{ansible_distribution}}
   roles:
-  - { role: common, tags: 'common,base' }
   - { role: matt, tags: 'matt', when: my_profile }
   - { role: zfs_auto_snapshot, tags: 'base', when: ZFS }
   - { role: ansible_control, tags: 'base', when: ansible_control }
+  - { role: common, tags: 'common,base' }
+  - { role: www_home, tags: 'www,www_home', when: www_home }
 
 - hosts: www
   sudo: yes
@@ -19,3 +20,8 @@
   - group_by: key={{ansible_distribution}}
   roles:
   - { role: pico, tags: 'www,pico', when: pico }
+  #  - { role: ANXS-postgresql, 
+  #    postgresql_databases: [ { name: 'gitlabhq_production' } ],
+  #    postgresql_users: [ { name: 'git', db: 'gitlabhq_production' }, { name: 'test', db: 'test' } ],
+  #    tags: ['www', 'db'],
+  #    when: postgresql }

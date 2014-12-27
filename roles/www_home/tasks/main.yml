@@ -1,0 +1,15 @@
+---
+- name: add homedir vhost
+  template: src=homedir
+    dest=/usr/local/etc/nginx/sites-available/homedir
+    owner=root
+    group=wheel
+    mode=0644
+  notify: restart nginx
+
+- name: enable homedir vhost
+  file: src=/usr/local/etc/nginx/sites-available/homedir
+    dest=/usr/local/etc/nginx/sites-enabled/homedir
+    state=link
+  notify: restart nginx
+
