@@ -7,5 +7,5 @@
 
 - include: rsync.yml tags="common,base,packages"
 
-- include: sshd.yml tags='common,base,sshd'
+- include: sshd.yml tags="common,base,sshd"
   when: sshd == "YES"

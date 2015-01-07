@@ -10,3 +10,10 @@
     mode=0644
   tags: sshd
   notify: restart sshd
+
+- name: ssh client config file
+  template: src=ssh_config.j2
+    dest=/etc/ssh/ssh_config
+    owner=root group=wheel 
+    mode=0644
+  tags: sshd
