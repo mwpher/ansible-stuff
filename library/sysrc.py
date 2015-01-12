@@ -63,9 +63,9 @@ class Sysrc(object):
           os.chmod(path, stat.S_IMODE(st.st_mode))
     except:
       self.module.fail_json(msg="Something failed while making the file!\r",
-          errortype='{}'.format(sys.exc_info()[0]),
-          errorvalue='{}'.format(sys.exc_info()[1]),
-          errortraceback='{}'.format(sys.exc_info()[2]),
+          errortype      = '{}'.format(sys.exc_info()[0]),
+          errorvalue     = '{}'.format(sys.exc_info()[1]),
+          errortraceback = '{}'.format(sys.exc_info()[2]),
           )
 
   def __init__(self, module):
@@ -81,7 +81,11 @@ class Sysrc(object):
       try:
         self.path = self.check_file(module.params['path'])
       except:
-        self.module.fail_json(msg='Could not find absolute path for {}'.format(module.params['path']))
+        self.module.fail_json(msg = 'Could not find or create {}'.format(module.params['path']),
+          errortype      = '{}'.format(sys.exc_info()[0]),
+          errorvalue     = '{}'.format(sys.exc_info()[1]),
+          errortraceback = '{}'.format(sys.exc_info()[2])
+          )
     self.result = {}
     self.rc     = None
     self.out    = ''
@@ -95,8 +99,6 @@ class Sysrc(object):
     elif self.state == 'absent':
       if not self.key:
         self.module.fail_json(msg="You must specify a key for 'state=absent'")
-
-    #TODO: check_file(self.path)
 
     cmd = [
         self.sysrc_path,
@@ -136,19 +138,19 @@ class Sysrc(object):
 def main():
   module = AnsibleModule(
       argument_spec = dict(
-        state=dict(default='present', choices=['present', 'absent'], type='str'),
-        key=dict(required=True, aliases=['name', 'option'], type='str'),
-        value=dict(aliases=['setting'], type='str'),
-        path=dict(aliases=['file'], default='/etc/rc.conf.local', type='str')
+        state       = dict(default='present', choices=['present', 'absent'], type='str'),
+        key         = dict(required=True, aliases=['name', 'option'], type='str'),
+        value       = dict(aliases=['setting'], type='str'),
+        path        = dict(aliases=['file'], default='/etc/rc.conf.local', type='str')
         ),
       supports_check_mode=False
       )
 
-  sysrc = Sysrc(module)
-  rc = sysrc.rc
-  out = sysrc.out
-  err = sysrc.err
-  result = sysrc.result
+  sysrc           = Sysrc(module)
+  rc              = sysrc.rc
+  out             = sysrc.out
+  err             = sysrc.err
+  result          = sysrc.result
   result['state'] = sysrc.state
   if sysrc.state == 'present':
     result['key'] = sysrc.key
