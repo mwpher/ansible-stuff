@@ -50,6 +50,24 @@ EXAMPLES = r"""
 """
 
 class Sysrc(object):
+
+  def check_file(self, path): # See if file is writeable or needs to be created
+    try:
+      path = os.path.abspath(path)
+      if not os.path.isfile(path):
+        with open(path, 'w') as f:
+          f.writelines('# {}: Created by the sysrc Ansible module\r\r'.format(path))
+        if path == '/etc/rc.conf.local':
+          st = os.stat('/etc/rc.conf')
+          os.chown(path, st.st_uid, st.st_gid)
+          os.chmod(path, stat.S_IMODE(st.st_mode))
+    except:
+      self.module.fail_json(msg="Something failed while making the file!\r",
+          errortype='{}'.format(sys.exc_info()[0]),
+          errorvalue='{}'.format(sys.exc_info()[1]),
+          errortraceback='{}'.format(sys.exc_info()[2]),
+          )
+
   def __init__(self, module):
     self.module = module
     try: # Find sysrc
@@ -61,7 +79,7 @@ class Sysrc(object):
     self.value  = module.params['value']
     if module.params['path']:
       try:
-        self.path = os.path.abspath(module.params['path'])
+        self.path = self.check_file(module.params['path'])
       except:
         self.module.fail_json(msg='Could not find absolute path for {}'.format(module.params['path']))
     self.result = {}
@@ -78,7 +96,7 @@ class Sysrc(object):
       if not self.key:
         self.module.fail_json(msg="You must specify a key for 'state=absent'")
 
-    #check_file(self.path)
+    #TODO: check_file(self.path)
 
     cmd = [
         self.sysrc_path,
@@ -115,15 +133,6 @@ class Sysrc(object):
 
     module.exit_json(**self.result)
 
-  def check_file(self, path): # See if file is writeable or needs to be created
-    if not os.path.isfile(path):
-      with open(path, 'w') as f:
-        f.writelines('# Created by the sysrc Ansible module\r')
-      if path == '/etc/rc.conf.local':
-        st = os.stat('/etc/rc.conf')
-        os.chown(path, st.st_uid, st.st_gid)
-        os.chmod(path, stat.S_IMODE(st.st_mode))
-
 def main():
   module = AnsibleModule(
       argument_spec = dict(
@@ -150,4 +159,3 @@ def main():
 
 from ansible.module_utils.basic import *
 main()
-
