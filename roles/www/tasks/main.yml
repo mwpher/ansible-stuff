@@ -1,7 +1,9 @@
 ---
-- include: nginx.yml tags='nginx'
+- include: nginx.yml tags='www,nginx'
   when: nginx
 
-- include: php.yml tags='php,php-fpm'
-  when: php
+- include: apache.yml tags='www,apache'
+  when: apache
 
+- include: php.yml tags='www,php,php-fpm'
+  when: php

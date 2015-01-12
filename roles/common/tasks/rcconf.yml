@@ -1,9 +1,19 @@
 ---
+- name: stat rc.conf.local
+  stat: path=/etc/rc.conf.local
+  register: st
+
 - name: rc.conf.local
   template: src=rc.conf.local.j2
     dest=/etc/rc.conf.local
     owner=root
     group=wheel
     mode=0644
-  notify: restart sshguard
+  when: not st.stat.exists
+
+- name: syslogd flags
+  sysrc: key="syslogd_flags"
+    value="{{syslogd_flags}}"
+    state=present
   notify: restart syslogd
+  tags: syslog

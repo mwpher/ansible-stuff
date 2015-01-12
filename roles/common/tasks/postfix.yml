@@ -4,6 +4,16 @@
   tags:
   - packages
 
+- name: postfix | disable sendmail
+  sysrc: key="{{item}}"
+    value='NO'
+    state=present
+  with_items:
+  - 'sendmail_enable'
+  - 'sendmail_submit_enable'
+  - 'sendmail_outbound_enable'
+  - 'sendmail_msp_queue_enable'
+
 - name: mailer.conf
   template: src=mailer.conf
     dest=/etc/mail/mailer.conf
@@ -15,4 +25,4 @@
   service: name=sendmail state=stopped
 
 - name: start postfix
-  service: name=postfix state=started
+  service: name=postfix state=started enabled=yes

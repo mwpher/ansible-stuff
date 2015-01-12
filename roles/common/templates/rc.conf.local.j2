@@ -1,33 +1,4 @@
-# {{ ansible_managed }}
+# rc.conf.local
 
 sshd_enable="{{ sshd }}"
 syslogd_flags="{{ syslogd_flags }}"
-
-{% if postfix == True %}
-sendmail_enable="NO"
-sendmail_submit_enable="NO"
-sendmail_outbound_enable="NO"
-sendmail_msp_queue_enable="NO"
-
-postfix_enable="YES"
-
-{% endif %}
-jail_sysvipc_allow="YES" # For jailhosts with PostgreSQL
-
-{% if nginx == True %}
-nginx_enable="YES"
-{% endif %}
-{% if phpfpm == True %}
-php_fpm_enable="YES"
-{% endif %}
-
-{% if sshguard == "YES" %}
-sshguard_enable="YES"
-sshguard_watch_logs="{{ sshguard_watch_logs }}"
-sshguard_safety_thresh="30"
-sshguard_pardon_min_interval="21600" 
-sshguard_prescribe_interval="86400"
-{% endif %}
-{% if ansible_default_ipv4.network is defined %}
-sshguard_whitelist="{{ ansible_default_ipv4.network }}/24" 
-{% endif %}

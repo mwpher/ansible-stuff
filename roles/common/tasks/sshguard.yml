@@ -11,5 +11,16 @@
     mode=0644
     state=file
 
+- name: sshguard flags
+  sysrc: key="{{ item.key }}"
+    value="{{ item.value }}"
+    state=present
+  with_items:
+  - { key: 'sshguard_watch_logs', value: "{{ sshguard_watch_logs }}" }
+  - { key: 'sshguard_safety_thresh', value: "30" }
+  - { key: 'sshguard_pardon_min_interval', value: "21600" }
+  - { key: 'sshguard_prescribe_interval', value: "86400" }
+  notify: restart sshguard
+
 - name: start sshguard
   service: name=sshguard state=started enabled=yes

@@ -1,6 +1,11 @@
 ---
+server_ip: 127.0.0.1
+server_port: 22
+
 nginx: False
 php: False
 php-fpm: False
 php-extensions: False
 redis: False
+apache: False
+apache_version: 24

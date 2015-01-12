@@ -1,0 +1,16 @@
+---
+- name: install apache
+  pkgng: name=apache{{ apache_version }}  state=present
+  tags:
+  - packages
+
+- name: httpd.conf
+  template: src=httpd.conf
+    dest=/usr/local/etc/apache{{ apache_version }}/httpd.conf
+    owner=root
+    group=wheel
+    mode=0644
+  notify: restart apache
+ 
+- name: enable apache
+  service: name=apache{{ apache_version }} state=started enabled=yes
