@@ -12,11 +12,7 @@
 
 - name: set up git correctly
   sudo_user: matt
-  shell: "{{ item }}"
-  with_items:
-  - git config --global user.name "Matthew Pherigo"
-  - git config --global user.email hybrid120@gmail.com
-  - git config --global push.default simple
+  copy: src=gitconfig dest=/home/matt/.gitconfig mode=0700
   tags:
   - git
 

@@ -1,0 +1,19 @@
+[user]
+	name = Matthew Pherigo
+	email = hybrid120@gmail.com
+[push]
+	default = simple
+[alias]
+	permission-reset = !git diff -p -R | grep -E \"^(diff|(old|new) mode)\" | git apply
+	fixws =!"\
+	  if (! git diff-index --quiet --cached HEAD); then \
+	    \
+	    git diff-files --quiet `git rev-parse --show-toplevel` ; \
+	    export NEED_TO_STASH=$? ; \
+	    \
+	    git commit -m FIXWS_SAVE_INDEX && \
+	    if [ 1 = $NEED_TO_STASH ] ; then git stash save FIXWS_SAVE_TREE; fi && \
+	    git rebase --whitespace=fix HEAD~ && \
+	    git reset --soft HEAD~ && \
+	    if [ 1 = $NEED_TO_STASH ] ; then git stash pop; fi ; \
+	  fi"
