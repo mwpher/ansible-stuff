@@ -10,8 +10,9 @@
   pkgng: name=py27-pip state=present cached=yes
   tags:
   - packages
+
 - name: install ansible
-  pip: name=ansible state=latest
+  pkgng: name=ansible state=present
   tags:
   - packages
 
