@@ -1,7 +1,6 @@
 #!/bin/sh
 
 PYTHON_COMMAND='env ASSUME_ALWAYS_YES=YES pkg update; env ASSUME_ALWAYS_YES=YES pkg install python'
-echo $@ $#
 
 ([ $# == '2' ] || exit)
 
