@@ -1,13 +1,9 @@
 ---
 - name: restart sshguard
   service: name=sshguard state=restarted
-  when: sshguard == "YES"
 
 - name: restart syslogd
   service: name=syslogd state=restarted
 
 - name: update aliases
   command: newaliases
-
-- name: restart sshd
-  service: name=sshd state=restarted

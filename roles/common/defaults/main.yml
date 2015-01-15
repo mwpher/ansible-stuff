@@ -1,13 +1,5 @@
 ---
 # common/defaults/main.yml
-sshd: "YES"
-sshd_port: 22
-sshd_permit_root_login: 'no'
-#sshd_listen_addresses: []
-sshd_password_authentication: 'no'
-sshd_tcp_forwarding: 'yes'
-sshd_x11_forwarding: 'yes'
-
 git: True
 postfix: False
 
@@ -21,4 +13,3 @@ sshguard: "YES"
 sshguard_watch_logs: "/var/log/auth.log" # colon-seperated
 
 syslogd_flags: "-ss -c"
-

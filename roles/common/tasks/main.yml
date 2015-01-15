@@ -1,26 +1,8 @@
 ---
 # Common settings
-- name: ansible group
-  group: name=ansible state=present
-
-- name: add ansible user
-  action: user name=ansible 
-    shell=/bin/sh 
-    group=ansible 
-    groups=wheel 
-    append=yes
-
-- name: upload ansible key
-  authorized_key: user=ansible
-    key="{{ lookup('file', '/home/matt/.ssh/ansible_rsa.pub') }}"
-    #"
-
 - include: freebsd.yml
   when: ansible_distribution == 'FreeBSD'
 
 - include: sudoers.yml tags="common,base,sudo"
 
 - include: rsync.yml tags="common,base,packages"
-
-- include: sshd.yml tags="common,base,sshd"
-  when: sshd == "YES"

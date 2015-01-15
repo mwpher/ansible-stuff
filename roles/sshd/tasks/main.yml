@@ -1,4 +1,18 @@
 ---
+- name: ansible group
+  group: name=ansible state=present
+
+- name: add ansible user
+  action: user name=ansible 
+    shell=/bin/sh 
+    group=ansible 
+    groups=wheel 
+    append=yes
+
+- name: upload ansible key
+  authorized_key: user=ansible
+    key="{{ lookup('file', '/home/matt/.ssh/ansible_rsa.pub') }}"
+    #"
 - name: sshd
   service: name=sshd state=started enabled=yes
   tags: sshd

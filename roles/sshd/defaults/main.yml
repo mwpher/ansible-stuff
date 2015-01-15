@@ -1,0 +1,7 @@
+---
+sshd_port: 22
+sshd_permit_root_login: 'no'
+#sshd_listen_addresses: []
+sshd_password_authentication: 'no'
+sshd_tcp_forwarding: 'yes'
+sshd_x11_forwarding: 'yes'

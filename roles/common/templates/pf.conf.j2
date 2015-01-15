@@ -1,0 +1,47 @@
+# {{ ansible_managed }}
+
+### Params
+## Interfaces
+local_if="lo0"
+{% if pf.ext.if is defined %}
+ext_if="{{ pf.ext.if }}"
+{% else %}
+ext_if="{{ ansible_default_ipv4.device }}"
+{% endif %}
+{% if pf.priv.if is defined %}
+priv_if={{ pf.priv.if }}
+{% endif %}
+
+## Address list
+{% if pf.ext.addr is defined %}
+ext_addr="{{ pf.ext.addr }}"
+{% else %}
+ext_addr="{{ ansible_default_ipv4.address }}"
+{% endif %}
+{% if pf.priv.addr is defined %}
+priv_addr="{{ pf.priv.addr }}"
+{% endif %}
+
+
+table <whitelist> { {% for ip in ipv4_whitelist %}{{ ip }} {% if loop.last == False %} , {% endif %}{% endfor %} }
+table <sshguard> persist
+
+### Rules
+# Set
+set block-policy drop
+set skip on $local_if
+set loginterface $ext_if
+
+scrub in all
+
+## Filter
+# SSH:
+block drop in log quick on $ext_if inet from <sshguard> to any label "SSHGUARD"
+pass in log quick to $ext_if port ssh keep state
+
+block in on $ext_if
+pass out all keep state
+
+{% if pf.priv.if is defined %}
+pass all on $priv_if
+{% endif %}

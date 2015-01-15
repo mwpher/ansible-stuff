@@ -1,0 +1,15 @@
+---
+- name: pf.conf
+  templates: src=pf.conf.j2
+    dest=/etc/pf.conf
+    owner=root
+    group=wheel
+    mode=0600
+    verify='pfctl -nf %s'
+  notify: restart pf
+
+- name: enable pf
+  service: name=pf state=started enabled=yes
+- name: enable pflog
+  service: name=pflog state=started enabled=yes
+  
