@@ -2,13 +2,8 @@
 - hosts: all
   remote_user: root
   accelerate: false
-
-  vars_prompt:
-  - name: sshd
-    prompt: "Configure SSH? ['YES'/'NO']"
-    default: "YES"
-
   pre_tasks:
+
   - name: SSL cert package
     pkgng: name=ca_root_nss state=present
     when: ansible_distribution == 'FreeBSD'
@@ -26,6 +21,7 @@
   - name: upload ansible key
     authorized_key: user=ansible
       key="{{ lookup('file', '/home/matt/.ssh/ansible_rsa.pub') }}"
+    #"
 
   - name: add dependencies for accelerated mode
     pkgng: name={{ item }} state=present
@@ -34,4 +30,4 @@
     - py27-keyczar
 
   roles:
-  - { role: common, tags='sshd' }
+  - { role: sshd }
