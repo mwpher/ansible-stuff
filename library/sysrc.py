@@ -49,6 +49,53 @@ EXAMPLES = r"""
     state=absent
 """
 
+class SysrcDummy(object):
+  """Dead simple Sysrc hack for when the real one isn't working."""
+  def __init__(self, module):
+    self.module = module
+    self.result = {}
+    self.state  = module.params['state']
+    self.key    = module.params['key']
+    self.value  = module.params['value']
+    if module.params['path']:
+      self.path = module.params['path']
+    else:
+      self.path = '/etc/rc.conf.local'
+    cmd = [
+        '/usr/sbin/sysrc',
+        '-f',
+        self.path
+        ]
+    if self.state == 'absent':
+      cmd.insert(1, '-x')
+      cmd.append(self.key)
+    else:
+      cmd.insert(1, '-n')
+      cmd.append(self.key + '=' + self.value)
+    (rc, out, err) = self.module.run_command(cmd)
+    if rc is not None and rc != 0 and self.state != 'absent':
+      self.module.fail_json(msg="Return code not 0!", err=err, cmd=cmd, rc=rc)
+
+    if self.state == 'present':
+      nochange = re.match('{} -> {}'.format(self.value, self.value), out)
+      if nochange:
+        self.result['changed'] = False
+      else:
+        self.result['changed'] = True
+      if err:
+        self.result['stderr'] = err
+        self.result['failed'] = True
+        self.module.fail_json(msg=err, cmd=cmd, rc=rc)
+    else:
+      if rc is not None and rc == 0:
+        self.result['changed'] = True
+      elif rc == 1:
+        self.result['changed'] = False
+      else:
+        self.module.fail_json(msg=err, cmd=cmd, rc=rc)
+
+    module.exit_json(**self.result)
+    
 class Sysrc(object):
 
   def check_file(self, path): # See if file is writeable or needs to be created
@@ -67,6 +114,7 @@ class Sysrc(object):
           errorvalue     = '{}'.format(sys.exc_info()[1]),
           errortraceback = '{}'.format(sys.exc_info()[2]),
           )
+    return path
 
   def __init__(self, module):
     self.module = module
@@ -77,19 +125,21 @@ class Sysrc(object):
     self.state  = module.params['state']
     self.key    = module.params['key']
     self.value  = module.params['value']
-    if module.params['path']:
-      try:
-        self.path = self.check_file(module.params['path'])
-      except:
-        self.module.fail_json(msg = 'Could not find or create {}'.format(module.params['path']),
-          errortype      = '{}'.format(sys.exc_info()[0]),
-          errorvalue     = '{}'.format(sys.exc_info()[1]),
-          errortraceback = '{}'.format(sys.exc_info()[2])
-          )
+    print self.module.jsonify(module.params['path'])
+    try:
+      self.path = self.check_file(module.params['path'])
+      if not os.path.isfile(self.path):
+        self.module.fail_json(msg='Path returned doesn\'t real', path=self.path)
+    except:
+      self.module.fail_json(msg='Could not find or create {}'.format(module.params['path']),
+        errortype      = '{}'.format(sys.exc_info()[0]),
+        errorvalue     = '{}'.format(sys.exc_info()[1]),
+        errortraceback = '{}'.format(traceback.format_tb(sys.exc_info()[2]))
+        )
     self.result = {}
-    self.rc     = None
-    self.out    = ''
-    self.err    = ''
+    rc     = None
+    out    = ''
+    err    = ''
 
     if self.state == 'present':
       if not self.value:
@@ -111,7 +161,10 @@ class Sysrc(object):
     else:
       cmd.insert(1, '-n')
       cmd.append(self.key + '=' + self.value)
-    (rc, out, err) = self.module.run_command(cmd)
+    try:
+      (rc, out, err) = self.module.run_command(cmd)
+    except:
+      self.module.fail_json(msg="run_command failed!", rc=rc, out=out, err=err, cmd=cmd)
     if rc is not None and rc != 0 and self.state != 'absent':
       self.module.fail_json(msg="Return code not 0!", err=err, cmd=cmd, rc=rc)
 
@@ -147,17 +200,6 @@ def main():
       )
 
   sysrc           = Sysrc(module)
-  rc              = sysrc.rc
-  out             = sysrc.out
-  err             = sysrc.err
-  result          = sysrc.result
-  result['state'] = sysrc.state
-  if sysrc.state == 'present':
-    result['key'] = sysrc.key
-    result['value'] = sysrc.value
-  else:
-    result['key'] = sysrc.key
-
 
 from ansible.module_utils.basic import *
 main()
