@@ -5,6 +5,9 @@
 - include: sshguard.yml
   when: sshguard == "YES"
 
+- include: openntpd.yml tags='common,base,openntpd'
+  when: openntpd
+
 - name: git package
   pkgng: name=git state=present cached=yes
   when: git == True

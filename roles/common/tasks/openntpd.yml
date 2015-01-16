@@ -1,0 +1,26 @@
+---
+- name: install openntpd
+  pkgng: name=openntpd state=present
+  tags:
+  - packages
+
+- name: disable ntpd
+  service: name=ntpd state=stopped enabled=no
+  register: fresh
+
+- name: openntpd config
+  template: src=ntpd.conf.j2
+    dest=/usr/local/etc/ntpd.conf
+    owner=root
+    group=wheel
+    mode=0644
+  notify: restart openntpd
+
+- debug: var=fresh
+
+- name: set time
+  command: ntpdate {{ ntpd_server }}
+  when: fresh["changed"]
+
+- name: start openntpd
+  service: name=openntpd state=started enabled=yes

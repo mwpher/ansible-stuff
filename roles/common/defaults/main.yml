@@ -3,6 +3,9 @@
 git: True
 postfix: False
 
+openntpd: False
+ntpd_server: "pool.ntp.org"
+
 logwatch: "YES"
 logwatch_hour: 8
 
