@@ -1,0 +1,5 @@
+---
+- hosts: Chiyochan.home
+  sudo: yes
+  tasks:
+  - sysrc: key=junk value=YES state=absent

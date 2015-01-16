@@ -1,0 +1,9 @@
+---
+- hosts: Chiyochan.home
+  sudo: yes
+
+  tasks:
+  - pkgng: name=bsdstats state=present
+    register: var
+
+  - debug: var=var
