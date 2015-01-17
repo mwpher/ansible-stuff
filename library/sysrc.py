@@ -49,53 +49,6 @@ EXAMPLES = r"""
     state=absent
 """
 
-class SysrcDummy(object):
-  """Dead simple Sysrc hack for when the real one isn't working."""
-  def __init__(self, module):
-    self.module = module
-    self.result = {}
-    self.state  = module.params['state']
-    self.key    = module.params['key']
-    self.value  = module.params['value']
-    if module.params['path']:
-      self.path = module.params['path']
-    else:
-      self.path = '/etc/rc.conf.local'
-    cmd = [
-        '/usr/sbin/sysrc',
-        '-f',
-        self.path
-        ]
-    if self.state == 'absent':
-      cmd.insert(1, '-x')
-      cmd.append(self.key)
-    else:
-      cmd.insert(1, '-n')
-      cmd.append(self.key + '=' + self.value)
-    (rc, out, err) = self.module.run_command(cmd)
-    if rc is not None and rc != 0 and self.state != 'absent':
-      self.module.fail_json(msg="Return code not 0!", err=err, cmd=cmd, rc=rc)
-
-    if self.state == 'present':
-      nochange = re.match('{} -> {}'.format(self.value, self.value), out)
-      if nochange:
-        self.result['changed'] = False
-      else:
-        self.result['changed'] = True
-      if err:
-        self.result['stderr'] = err
-        self.result['failed'] = True
-        self.module.fail_json(msg=err, cmd=cmd, rc=rc)
-    else:
-      if rc is not None and rc == 0:
-        self.result['changed'] = True
-      elif rc == 1:
-        self.result['changed'] = False
-      else:
-        self.module.fail_json(msg=err, cmd=cmd, rc=rc)
-
-    module.exit_json(**self.result)
-    
 class Sysrc(object):
 
   def check_file(self, path): # See if file is writeable or needs to be created
@@ -103,7 +56,7 @@ class Sysrc(object):
       path = os.path.abspath(path)
       if not os.path.isfile(path):
         with open(path, 'w') as f:
-          f.writelines('# {}: Created by the sysrc Ansible module\r\r'.format(path))
+          f.writelines('# {}: Created by the sysrc Ansible module\n\n'.format(path))
         if path == '/etc/rc.conf.local':
           st = os.stat('/etc/rc.conf')
           os.chown(path, st.st_uid, st.st_gid)
