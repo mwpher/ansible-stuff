@@ -10,3 +10,8 @@
 
 - name: restart openntpd
   service: name=openntpd state=restarted
+
+- name: restart pf
+  service: name=pf state=restarted
+- name: reload pf
+  command: pfctl -vf /etc/pf.conf

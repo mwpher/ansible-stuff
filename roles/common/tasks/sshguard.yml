@@ -1,8 +1,13 @@
 ---
 - name: install sshguard
-  pkgng: name=sshguard state=present cached=yes
+  pkgng: name=sshguard state=present
   tags:
   - packages
+  when: not pf
+
+- name: install sshguard-pf
+  pkgng: name=sshguard-pf state=present
+  when: pf
 
 - name: hosts.allow
   file: path=/etc/hosts.allow
@@ -10,6 +15,7 @@
     group=wheel
     mode=0644
     state=file
+  when: not pf
 
 - name: sshguard flags
   sysrc: key="{{ item.key }}"

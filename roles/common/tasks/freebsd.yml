@@ -1,12 +1,22 @@
 ---
+- include: rcconf.yml
+
+- name: syslogd flags
+  sysrc: key="syslogd_flags" value="{{ syslogd_flags }}"
+    state="present"
+  notify: restart syslogd
+
+- include: openntpd.yml tags='common,base,openntpd'
+  when: openntpd
+
+- include: pf.yml tags='common,base,pf'
+  when: pf
+
 - include: logwatch.yml
   when: logwatch == "YES"
 
 - include: sshguard.yml
   when: sshguard == "YES"
-
-- include: openntpd.yml tags='common,base,openntpd'
-  when: openntpd
 
 - name: git package
   pkgng: name=git state=present cached=yes
@@ -15,28 +25,11 @@
   - packages
 
 - name: bsdstats
-  pkgng: name=bsdstats state=present cached=yes
+  pkgng: name=bsdstats state=present
   tags:
   - packages
 
 - include: periodic.yml 
 
-- include: rcconf.yml
-
 - include: postfix.yml
   when: postfix == True
-
-- name: syslogd flags
-  sysrc: key="syslogd_flags" value="{{ syslogd_flags }}"
-    state="present"
-  notify: restart syslogd
-
-#- name: pf.conf
-#  templates: src=pf.conf.j2
-#    dest=/etc/pf.conf
-#    owner=root
-#    group=wheel
-#    mode=0644
-#    verify='pfctl -nf %s'
-#  notify: restart pf
-#  when: pf

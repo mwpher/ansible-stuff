@@ -3,23 +3,34 @@
 ### Params
 ## Interfaces
 local_if="lo0"
-{% if pf.ext.if is defined %}
+{% if pf is defined %}
+{% if pf.ext is defined %}
 ext_if="{{ pf.ext.if }}"
 {% else %}
 ext_if="{{ ansible_default_ipv4.device }}"
 {% endif %}
-{% if pf.priv.if is defined %}
-priv_if={{ pf.priv.if }}
+{% if pf.priv is defined %}
+priv_if="{{ pf.priv.if }}"
 {% endif %}
-
 ## Address list
-{% if pf.ext.addr is defined %}
+{% if pf.ext is defined %}
 ext_addr="{{ pf.ext.addr }}"
 {% else %}
 ext_addr="{{ ansible_default_ipv4.address }}"
 {% endif %}
-{% if pf.priv.addr is defined %}
+{% if pf.priv is defined %}
 priv_addr="{{ pf.priv.addr }}"
+{% endif %}
+{% endif %}
+home_addr="pherigo.noip.me"
+{% if jailhost is defined %}
+
+## For Jailhosts!
+jail_if="{{ jailhost.if }}"
+jail_net="10.0.0.0/24"
+{% for item in jailhost.jails %}
+jail_addr_{{ item.name }}="{{ item.ip }}"
+{% endfor %}
 {% endif %}
 
 
@@ -34,14 +45,30 @@ set loginterface $ext_if
 
 scrub in all
 
+{% if jailhost is defined %}
+# nat all jail traffic
+nat pass on $ext_if from $jail_net to any -> $ext_addr
+
+# rdr
+{% for item in jailhost.jails %}
+rdr pass on $ext_if proto tcp from $home_addr to \
+        $ext_addr port {{ item.rdr.port_ext }} -> \
+        $jail_addr_{{ item.name }} port {{ item.rdr.port }} \
+{% endfor %}
+
+{% endif %}
 ## Filter
+antispoof quick log for $ext_if
+
 # SSH:
 block drop in log quick on $ext_if inet from <sshguard> to any label "SSHGUARD"
-pass in log quick to $ext_if port ssh keep state
+pass in log quick inet proto tcp to $ext_if port ssh keep state label "SSH - allowed"
 
 block in on $ext_if
 pass out all keep state
 
-{% if pf.priv.if is defined %}
+pass in on $ext_if inet from $home_addr
+
+{% if pf.priv is defined %}
 pass all on $priv_if
 {% endif %}
