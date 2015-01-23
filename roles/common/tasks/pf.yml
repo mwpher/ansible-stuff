@@ -18,3 +18,15 @@
   async: 20
   poll: 1
   ignore_errors: yes
+
+- name: install pf_reloader
+  copy: src=pf_reloader dest=/usr/local/etc/rc.d/rc_reloader
+    owner=root
+    group=wheel
+    mode=0744
+
+- name: enable pf_reloader
+  sysrc: key={{item.name}} value={{item.value}} state=present
+  with_items:
+  - { name: "pf_reloader_enable", value: "YES" }
+  - { name: "pf_reloader_flags", value: "reload" }
