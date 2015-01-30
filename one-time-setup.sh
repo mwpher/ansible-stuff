@@ -15,7 +15,7 @@ else
 		echo "$3 ansible_connection=paramiko ansible_ssh_user=$2 ansible_python_interpreter=/usr/local/bin/python" > tmphosts
 	else
 		ssh -t ${1}@${2} $PYTHON_COMMAND
-		echo "$1 ansible_connection=paramiko ansible_ssh_user=$1 ansible_python_interpreter=/usr/local/bin/python" > tmphosts
+		echo "temp ansible_ssh_host=$1 ansible_connection=paramiko ansible_ssh_user=$1 ansible_python_interpreter=/usr/local/bin/python" > tmphosts
 	fi
 	ansible-playbook one-time-setup.yml -ki ./tmphosts
 fi
