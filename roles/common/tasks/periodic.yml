@@ -6,6 +6,18 @@
     group=wheel
     mode=0755
 
+- name: make periodic log files
+  file: path={{ periodic_path }}{{ item }}.log
+    owner=root
+    group=wheel
+    mode=0600
+    state=touch
+  changed_when: false
+  with_items:
+  - daily
+  - weekly
+  - monthly
+
 - name: set periodic mail recipient
   lineinfile: "dest=/etc/aliases
     line='root: {{ periodic_user }}'" #"

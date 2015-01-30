@@ -19,6 +19,8 @@ sshguard_watch_logs: "/var/log/auth.log" # colon-seperated
 
 syslogd_flags: "-ss -c"
 
+periodic_path: '/var/log/'
+
 # Sample PF:
 # pf:
 #   ext:
