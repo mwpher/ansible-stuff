@@ -15,8 +15,11 @@ short_description: Manage FreeBSD's rc.conf files through sysrc. Create file if
 requirements: [ FreeBSD, sysrc ]
 version_added: '0.1'
 options:
+  line:
+    required: false
+    description: a single rc.conf key-value pair, such as 'sendmail_enable="NO"'
   key:
-    required: true
+    required: false
     aliases: [ option, name ]
     description:
     - the key part of a key-value pair to go in a conf file
@@ -41,6 +44,9 @@ options:
 """
 
 EXAMPLES = r"""
+- sysrc: line='ezjail_enable="YES"'
+    state=present
+
 - sysrc: key=sshd_enable
     value=YES
     state=present
@@ -75,9 +81,10 @@ class Sysrc(object):
       self.sysrc_path = self.module.get_bin_path('sysrc', True)
     except:
       self.module.fail_json(msg="Could not find the path for sysrc!")
-    self.state  = module.params['state']
-    self.key    = module.params['key']
-    self.value  = module.params['value']
+    self.state = module.params['state']
+    self.key   = module.params['key']
+    self.value = module.params['value']
+    self.line  = module.params['line']
     print self.module.jsonify(module.params['path'])
     try:
       self.path = self.check_file(module.params['path'])
@@ -94,14 +101,19 @@ class Sysrc(object):
     out    = ''
     err    = ''
 
+    if self.line:
+      self.key, self.value = re.split('\=', self.line, maxsplit=1)
+
     if self.state == 'present':
-      if not self.value:
-        self.module.fail_json(msg="You must specify a key and value for 'state=present'")
-      if not self.key:
-        self.module.fail_json(msg="You must specify a key and value for 'state=present'")
+      if not self.line:
+        if not self.value:
+          self.module.fail_json(msg="You must specify a key and value for 'state=present'")
+        if not self.key:
+          self.module.fail_json(msg="You must specify a key and value for 'state=present'")
     elif self.state == 'absent':
-      if not self.key:
-        self.module.fail_json(msg="You must specify a key for 'state=absent'")
+      if not self.line:
+        if not self.key:
+          self.module.fail_json(msg="You must specify a key for 'state=absent'")
 
     cmd = [
         self.sysrc_path,
@@ -145,14 +157,15 @@ def main():
   module = AnsibleModule(
       argument_spec = dict(
         state       = dict(default='present', choices=['present', 'absent'], type='str'),
-        key         = dict(required=True, aliases=['name', 'option'], type='str'),
+        key         = dict(aliases=['name', 'option'], type='str'),
         value       = dict(aliases=['setting'], type='str'),
-        path        = dict(aliases=['file'], default='/etc/rc.conf.local', type='str')
+        path        = dict(aliases=['file'], default='/etc/rc.conf.local', type='str'),
+        line        = dict(type='str')
         ),
       supports_check_mode=False
       )
 
-  sysrc           = Sysrc(module)
+  sysrc = Sysrc(module)
 
 from ansible.module_utils.basic import *
 main()
