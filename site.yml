@@ -11,6 +11,7 @@
   - { role: zfs_auto_snapshot, tags: 'base', when: ZFS }
   - { role: ansible_control, tags: 'base', when: ansible_control }
   - { role: www_home, tags: 'www,www_home', when: www_home }
+  - { role: jailhost, tags: 'ezjail,jails,www', when: jailhost }
 
 - hosts: www
   sudo: yes

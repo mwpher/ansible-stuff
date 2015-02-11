@@ -10,6 +10,7 @@ nginx: False
 phpfpm: False
 postfix: False
 www_home: False
+jailhost: False
 
 # SSH
 sshd: "YES"

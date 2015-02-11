@@ -1,0 +1,36 @@
+---
+- name: install ezjail
+  pkgng: name=ezjail state=present
+
+- name: ezjail.conf
+  template: src=ezjail.conf
+    dest=/usr/local/etc/ezjail.conf
+    owner=root
+    group=wheel
+    mode=600
+
+- name: set default flavour permissions
+  file: path=/usr/jails/flavours/default
+    owner=root
+    group=wheel
+    mode=0644
+    state=directory
+
+- name: setup default flavour
+  synchronize: src=default-flavour/
+    dest=/usr/jails/flavours/default/
+    archive=no
+    recursive=yes
+    times=yes
+    checksum=yes
+
+- name: set jailhost variables
+  sysrc: line={{ item }}
+    state=present
+  with_items:
+  - jail_sysvipc_allow=YES
+  - cloned_interfaces="lo1"
+  - gateway_enable="YES"
+
+- name: enable ezjail
+  service: name=ezjail enabled=yes
