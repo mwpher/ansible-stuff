@@ -13,6 +13,10 @@
   authorized_key: user=ansible
     key="{{ lookup('file', '/home/matt/.ssh/ansible_rsa.pub') }}"
     #"
+- name: upload root key
+  authorized_key: user=root
+    key="{{ lookup('file', '/home/matt/.ssh/ansible_rsa.pub') }}"
+    #"
 - name: sshd
   service: name=sshd state=started enabled=yes
   tags: sshd
