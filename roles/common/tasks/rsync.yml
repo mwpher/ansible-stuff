@@ -2,7 +2,13 @@
 - name: install rsync [FreeBSD]
   pkgng: name=rsync state=present cached=yes
   when: ansible_distribution == 'FreeBSD'
+- name: install rdiff-backup [FreeBSD]
+  pkgng: name=rdiff-backup state=present cached=yes
+  when: ansible_distribution == 'FreeBSD'
 
 - name: install rsync [OpenBSD]
   openbsd_pkg: name=rsync-- state=present
+  when: ansible_distribution == 'OpenBSD'
+- name: install rdiff-backup [OpenBSD]
+  openbsd_pkg: name=rdiff-backup state=present
   when: ansible_distribution == 'OpenBSD'
