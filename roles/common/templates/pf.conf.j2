@@ -4,7 +4,7 @@
 ## Interfaces
 local_if="lo0"
 {% if pf is defined %}
-{% if pf.ext is defined %}
+{% if pf.ext is defined and pf.ext.if is defined %}
 ext_if="{{ pf.ext.if }}"
 {% else %}
 ext_if="{{ ansible_default_ipv4.device }}"
@@ -13,7 +13,7 @@ ext_if="{{ ansible_default_ipv4.device }}"
 priv_if="{{ pf.priv.if }}"
 {% endif %}
 ## Address list
-{% if pf.ext is defined %}
+{% if pf.ext is defined and pf.ext.addr is defined %}
 ext_addr="{{ pf.ext.addr }}"
 {% else %}
 ext_addr="{{ ansible_default_ipv4.address }}"
@@ -50,10 +50,12 @@ scrub in all
 nat pass on $ext_if from $jail_net to any -> $ext_addr
 
 # rdr
-{% for item in jailhost.jails %}
+{% for jail in jailhost.jails %}
+{% for rule in jail.rdr %}
 rdr pass on $ext_if proto tcp from $home_addr to \
-        $ext_addr port {{ item.rdr.port_ext }} -> \
-        $jail_addr_{{ item.name }} port {{ item.rdr.port }} \
+        $ext_addr port {{ rule.port_ext }} -> \
+        $jail_addr_{{ jail.name }} port {{ rule.port }} \
+{% endfor %}
 {% endfor %}
 
 {% endif %}

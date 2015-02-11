@@ -1,9 +1,4 @@
 ---
-- name: enable pf
-  service: name=pf state=started enabled=yes
-- name: enable pflog
-  service: name=pflog state=started enabled=yes
-  
 - name: pf.conf
   template: src=pf.conf.j2
     dest=/etc/pf.conf
@@ -14,10 +9,20 @@
   notify: reload pf
 
 - name: enable pf
+  service: name=pf enabled=yes
+- name: enable pflog
+  service: name=pflog enabled=yes
+  
+- name: enable pf
   command: pfctl -e
   async: 20
   poll: 1
   ignore_errors: yes
+
+- name: start pf
+  service: name=pf state=started
+- name: start pflog
+  service: name=pflog state=started
 
 - name: install pf_reloader
   copy: src=pf_reloader dest=/usr/local/etc/rc.d/rc_reloader
