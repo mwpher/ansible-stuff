@@ -1,0 +1,4 @@
+---
+- name: install bacula-client [FreeBSD]
+pkgng: name=bacula-client state=present
+  when: ansible_distribution == 'FreeBSD'

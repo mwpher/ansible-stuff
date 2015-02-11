@@ -5,4 +5,6 @@
 
 - include: sudoers.yml tags="common,base,sudo"
 
-- include: rsync.yml tags="common,base,packages"
+- include: rsync.yml tags="common,base,packages,rsync"
+
+- include: bacula.yml tags="common,base,packages,bacula"
