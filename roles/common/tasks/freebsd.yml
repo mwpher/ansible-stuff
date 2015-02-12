@@ -12,10 +12,10 @@
 - include: pf.yml tags='common,base,pf'
   when: pf
 
-- include: logwatch.yml
+- include: logwatch.yml tags='common,base,logwatch'
   when: logwatch == "YES"
 
-- include: sshguard.yml
+- include: sshguard.yml tags='common,base,sshguard,ssh'
   when: sshguard == "YES"
 
 - name: git package
@@ -29,7 +29,7 @@
   tags:
   - packages
 
-- include: periodic.yml 
+- include: periodic.yml tags='common,base,freebsd,periodic'
 
-- include: postfix.yml
+- include: postfix.yml tags='common,base,mail,postfix'
   when: postfix == True
