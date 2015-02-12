@@ -15,3 +15,6 @@
   service: name=pf state=restarted
 - name: reload pf
   command: pfctl -vf /etc/pf.conf
+
+- name: set time
+  command: ntpdate {{ ntpd_server }}
