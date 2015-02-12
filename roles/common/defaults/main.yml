@@ -16,6 +16,9 @@ daily_clean_tmps_enable: True
 
 sshguard: "YES"
 sshguard_watch_logs: "/var/log/auth.log" # colon-seperated
+sshguard_whitelisted: "pherigo.noip.me
+192.168.*
+10.*"
 
 syslogd_flags: "-ss -c"
 

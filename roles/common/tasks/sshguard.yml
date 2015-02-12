@@ -17,6 +17,14 @@
     state=file
   when: not pf
 
+- name: whitelist file
+  copy: path=/usr/local/etc/sshguard.whitelist
+    owner=root
+    group=wheel
+    mode=0644
+    content="{{ sshguard_whitelisted }}"
+    #"
+
 - name: sshguard flags
   sysrc: key="{{ item.key }}"
     value="{{ item.value }}"
