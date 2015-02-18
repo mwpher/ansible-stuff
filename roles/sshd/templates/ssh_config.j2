@@ -1,49 +1,14 @@
 # ssh_config
 # {{ ansible_managed }}
 
-# Github needs diffie-hellman-group-exchange-sha1 some of the time but not always.
-Host github.com
-    KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1
-
 # Use most secure algorithms
 Host *
     HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-rsa-cert-v00@openssh.com,ssh-ed25519,ssh-rsa
     KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
     Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
     MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com
+    VerifyHostKeyDNS {{ ssh_verifyDNS }}
 
-# Site-wide defaults for some commonly used options.  For a comprehensive
-# list of available options, their meanings and defaults, please see the
-# ssh_config(5) man page.
-
-# Host *
-#   ForwardAgent no
-#   ForwardX11 no
-#   RhostsRSAAuthentication no
-#   RSAAuthentication yes
-#   PasswordAuthentication yes
-#   HostbasedAuthentication no
-#   GSSAPIAuthentication no
-#   GSSAPIDelegateCredentials no
-#   BatchMode no
-#   CheckHostIP no
-#   AddressFamily any
-#   ConnectTimeout 0
-#   StrictHostKeyChecking ask
-#   IdentityFile ~/.ssh/identity
-#   IdentityFile ~/.ssh/id_rsa
-#   IdentityFile ~/.ssh/id_dsa
-#   Port 22
-#   Protocol 2,1
-#   Cipher 3des
-#   Ciphers aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,aes128-cbc,3des-cbc
-#   MACs hmac-md5,hmac-sha1,umac-64@openssh.com,hmac-ripemd160
-#   EscapeChar ~
-#   Tunnel no
-#   TunnelDevice any:any
-#   PermitLocalCommand no
-#   VisualHostKey no
-#   ProxyCommand ssh -q -W %h:%p gateway.example.com
-#   RekeyLimit 1G 1h
-#   VerifyHostKeyDNS yes
-#   VersionAddendum FreeBSD-20140420
+# Github needs diffie-hellman-group-exchange-sha1 some of the time but not always.
+Host github.com
+    KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1
