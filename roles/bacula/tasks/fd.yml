@@ -1,0 +1,41 @@
+---
+- name: install bacula-client [FreeBSD]
+  pkgng: name=bacula-client state=present
+#  when: ansible_distribution == 'FreeBSD'
+
+- name: enable bacula-fd
+  service: name=bacula-fd enabled=yes
+
+- name: director hosts line
+  lineinfile: dest=/etc/hosts
+    regexp='^127\.0\.0\.1'
+    line='127.0.0.1 {{ hostsfile['127.0.0.1']|join(' ') }}'
+    owner=root
+    group=wheel
+    mode=0644
+  #'
+
+- name: tunneluser
+  user: name=tunneluser shell=/bin/sh createhome=yes
+
+- name: tunneluser .ssh
+  file: path=/home/tunneluser/.ssh
+    owner=tunneluser
+    group=tunneluser
+    mode=0700
+    state=directory
+
+- name: tunneluser pubkey
+  authorized_key: user=tunneluser
+    key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqIWP1gTJlAmZ/UZODrMOOnJ0BMcla+d6K9XjttjX9juaaKA89WFD+CVnhNzWFr9kBqAHgNH5HjhCFAXhaT/0Ctt+6gWV3a8oOV9wc81pcdA833tMFKLmmWnYqLUldbThQbZCVKJu0MPNVL1xbaNxRRXg0qimmIcGQrweRr7G33SeDwE370/R+8jBo9TRrzSqMiktLO/HLlbtbOWnGLWw5GVUUfGEuG1Fo5yMI+PVcOGSIPMMPImYAwF+4a1o6/ArBBBSTVhDp53SfADiNJsyqm5BHHkY2kS6hYKsmxg4VORpZbxUZs/0HQRZYcUfGKgr8xlq0tT9LnKN1oUUgeIIb SSH Tunnel for bacula"
+
+- name: bacula-fd.conf
+  template: src=bacula-fd.conf.j2
+    dest=/usr/local/etc/bacula/bacula-fd.conf
+    owner=root
+    group=bacula
+    mode=0640
+  notify: restart bacula-fd
+
+- name: start bacula-fd
+  service: name=bacula-fd state=running enabled=yes

@@ -1,0 +1,9 @@
+---
+#bacula:
+#  director: bacula-dir
+#  clients:
+#    "{{ ansible_hostname }}":
+#      nickname: "{{ ansible_hostname }}-fd"
+#      password: abcdefg
+#  storage:
+#    default:

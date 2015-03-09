@@ -1,0 +1,20 @@
+Director {
+  Name = {{ bacula.director }}
+  Password = "{{ bacula.clients[ansible_hostname].password }}"
+}
+
+FileDaemon {
+  Name = {{ bacula.clients[ansible_hostname].nickname }}
+  FDAddress = 127.0.0.1
+  FDport = 9102
+  WorkingDirectory = /var/db/bacula
+  Pid Directory = /var/run
+  Maximum Concurrent Jobs = 20
+# Plugin Directory = /usr/local/lib
+}
+
+# Send all messages except skipped files back to Director
+Messages {
+  Name = Standard
+  director = {{ bacula.director }} = all, !skipped, !restored
+}

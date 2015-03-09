@@ -1,0 +1,3 @@
+---
+- include: fd.yml tags=bacula,bacula-fd,backup
+  when: bacula
