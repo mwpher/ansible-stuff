@@ -7,6 +7,7 @@
   - group_by: key={{ansible_distribution}}
   roles:
   - { role: common, tags: 'common,base' }
+  - { role: bacula, tags: "common,base,packages,bacula", when: bacula is defined }
   - { role: matt, tags: 'matt', when: my_profile }
   - { role: zfs_auto_snapshot, tags: 'base', when: ZFS }
   - { role: ansible_control, tags: 'base', when: ansible_control }
