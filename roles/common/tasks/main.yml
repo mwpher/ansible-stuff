@@ -1,10 +1,11 @@
 ---
 # Common settings
+- include: hostname.yml
+  when: hostname is defined
+
 - include: freebsd.yml
   when: ansible_distribution == 'FreeBSD'
 
 - include: sudoers.yml tags="common,base,sudo"
 
 - include: rsync.yml tags="common,base,packages,rsync"
-
-- include: bacula.yml tags="common,base,packages,bacula"
