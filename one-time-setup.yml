@@ -30,4 +30,4 @@
     - py27-keyczar
 
   roles:
-    - { role: common, sshguard: false, logwatch: false, git: false, postfix: false }
+    - { role: sshd }
