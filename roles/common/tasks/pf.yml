@@ -24,6 +24,13 @@
 - name: start pflog
   service: name=pflog state=started
 
+- name: ensure rc.d
+  file: path=/usr/local/etc/rc.d
+    state=directory
+    owner=root
+    group=wheel
+    mode=0755
+
 - name: install pf_reloader
   copy: src=pf_reloader dest=/usr/local/etc/rc.d/rc_reloader
     owner=root
