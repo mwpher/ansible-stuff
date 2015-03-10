@@ -6,3 +6,7 @@ sshd_password_authentication: 'no'
 sshd_tcp_forwarding: 'yes'
 sshd_x11_forwarding: 'no'
 ssh_verifyDNS: 'yes'
+
+ssh_portable: false
+ssh_conf: '/etc/ssh'
+ssh_service: 'sshd'
