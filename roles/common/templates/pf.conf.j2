@@ -9,7 +9,7 @@ ext_if="{{ pf.ext.if }}"
 {% else %}
 ext_if="{{ ansible_default_ipv4.device }}"
 {% endif %}
-{% if pf.priv is defined %}
+{% if pf.priv is defined and pf.priv.if is defined %}
 priv_if="{{ pf.priv.if }}"
 {% endif %}
 ## Address list
@@ -23,8 +23,8 @@ priv_addr="{{ pf.priv.addr }}"
 {% endif %}
 {% endif %}
 home_addr="pherigo.noip.me"
-{% if jailhost is defined %}
 
+{% if jailhost -%}
 ## For Jailhosts!
 jail_if="{{ jailhost.if }}"
 jail_net="10.0.0.0/24"
@@ -37,6 +37,10 @@ jail_addr_{{ item.name }}="{{ item.ip }}"
 table <whitelist> { {% for ip in ipv4_whitelist %}{{ ip }} {% if loop.last == False %} , {% endif %}{% endfor %} }
 table <sshguard> persist
 
+{% if ipv4_ports is defined %}
+table <openports> { {% for port in ipv4_ports %}{{ port }} {% if loop.last == False %} , {% endif %}{% endfor %} }
+{% endif %}
+
 ### Rules
 # Set
 set block-policy drop
@@ -45,7 +49,7 @@ set loginterface $ext_if
 
 scrub in all
 
-{% if jailhost is defined %}
+{% if jailhost %}
 # nat all jail traffic
 nat pass on $ext_if from $jail_net to any -> $ext_addr
 
@@ -70,6 +74,9 @@ block in on $ext_if
 pass out all keep state
 
 pass in on $ext_if inet from $home_addr
+{% if ipv4_ports is defined %}
+pass in on $ext_if inet proto tcp to port <openports>
+{% endif %}
 
 {% if pf.priv is defined %}
 pass all on $priv_if

@@ -1,0 +1,9 @@
+---
+- name: hostname | set while running
+  command: hostname {{ hostname }}
+  changed_when: false
+
+- name: hostname | rc.conf FreeBSD
+  sysrc: line="hostname={{ hostname }}" state=present
+  when: ansible_distribution == 'FreeBSD'
+  #"

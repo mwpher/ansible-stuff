@@ -1,0 +1,17 @@
+---
+- name: bsdstats
+  openbsd_pkg: name=bsdstats state=present
+  tags:
+  - packages
+
+- name: git package
+  pkgng: name=git state=present cached=yes
+  when: git == True
+  tags:
+  - packages
+
+- include: sshguard.yml tags='common,base,sshguard,ssh'
+  when: sshguard == "YES"
+
+- include: logwatch.yml tags='common,base,logwatch'
+  when: logwatch == "YES"

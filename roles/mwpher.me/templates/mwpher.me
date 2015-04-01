@@ -1,0 +1,39 @@
+# nginx/mwpher.me
+# {{ ansible_managed }}
+server
+{
+    listen 80;
+    server_name mwpher.me www.mwpher.me; # Domain name pointed to server
+
+    root /usr/local/www/mwpher.me/;
+    
+    location / {
+        index index.html;
+        try_files $uri $uri.html =404;
+    }
+
+    # far-future aggressive caching for asset files
+    # - this is optional - tune it to suit your content change rate
+    # - assumes that once an asset exists, it is stable
+    location ~* \.(gif|jpg|png|css|js|ico|au|mp3|ttf)$ {
+        expires  30d;
+
+        # you might prefer much shorter caching, e.g
+        # expires  5m;
+
+        # or the maximum possible
+        # expires  max;
+    }
+
+    error_page  404  /404.html;
+    charset utf-8;
+
+    location ~ /\.ht
+    {
+        deny all;
+    }
+    location ~ /\.git
+    {
+        deny all;
+    }
+}

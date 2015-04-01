@@ -1,0 +1,14 @@
+---
+- name: add mwpher.me vhost
+  template: src=mwpher.me
+    dest=/usr/local/etc/nginx/sites-available/mwpher.me
+    owner=root
+    group=wheel
+    mode=0644
+  notify: restart nginx
+
+- name: enable mwpher.me vhost
+  file: src=/usr/local/etc/nginx/sites-available/mwpher.me
+    dest=/usr/local/etc/nginx/sites-enabled/mwpher.me
+    state=link
+  notify: restart nginx
